@@ -1,0 +1,281 @@
+<template>
+  <div>
+    <div style="width:100%;">
+      <el-input v-model="searchParam.username" placeholder="用户名" clearable />
+      <el-input v-model="searchParam.usercode" placeholder="学号" clearable />
+      <el-input v-model="searchParam.realname" placeholder="姓名" clearable />
+<!--      <el-cascader clearable v-model="searchParam.class" placeholder="专业班级" @change="handleChange" :props="defaultProps" :options="classes"  :show-all-levels="false"></el-cascader>-->
+      <el-button @click="getAllList" type="primary">查询</el-button>
+<!--      <el-button @click="toAdd" >新增</el-button>-->
+    </div>
+
+
+    <div style="float:left;padding-top:20px;width:98%">
+      <el-table stripe :data="tableData" style="width: 100%">
+        <el-table-column label="id" prop="id"  width="200"></el-table-column>
+        <el-table-column label="用户名" prop="username"></el-table-column>
+        <el-table-column label="学号" prop="account"></el-table-column>
+        <el-table-column label="权限" prop="role"></el-table-column>
+        <el-table-column label="性别" prop="sex" width="100"></el-table-column>
+<!--        <el-table-column label="密码" prop="password"></el-table-column>-->
+<!--        <el-table-column label="专业" prop="major"></el-table-column>-->
+        <el-table-column label="小组" prop="groupId" width="100"></el-table-column>
+<!--        <el-table-column label="出生年月" prop="birthday"></el-table-column>-->
+<!--        <el-table-column label="联系方式" prop="phone"></el-table-column>-->
+<!--        <el-table-column label="家庭住址" prop="address"></el-table-column>-->
+        <el-table-column label="创建时间" prop="createtime"></el-table-column>
+        <el-table-column fixed="right" label="操作" >
+          <template slot-scope="scope">
+            <el-button @click="delData(scope.row.id)" type="danger" size="small">禁用</el-button>
+            <el-button @click="toUpdate(scope.row)" type="primary" size="small">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <div style="padding-top:20px;width:80%;float:left">
+      <el-pagination :page-size="10" background layout="prev, pager, next"
+                     @current-change="handleCurrentChange"
+                     :current-page.sync="searchParam.pageNum"
+                     :total="total"></el-pagination>
+    </div>
+
+<!--    <el-dialog title="用户信息" width="40%" :visible.sync="addDialogFormVisible">-->
+<!--      <el-form :model="addform" :rules="addformrules" ref="addform" >-->
+<!--        <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">-->
+<!--          <el-input v-model="addform.username" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="真实姓名" :label-width="formLabelWidth" prop="realname">-->
+<!--          <el-input v-model="addform.realname" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="学号" :label-width="formLabelWidth" prop="usercode">-->
+<!--          <el-input v-model="addform.usercode" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">-->
+<!--          <el-select clearable v-model="addform.sex"  >-->
+<!--            <el-option v-for="item in sexs" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
+<!--          </el-select>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="密码" :label-width="formLabelWidth" prop="password">-->
+<!--          <el-input show-password v-model="addform.password" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="联系方式" :label-width="formLabelWidth" prop="mobile">-->
+<!--          <el-input v-model="addform.mobile" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="专业班级" :label-width="formLabelWidth" prop="majorclass">-->
+<!--          <el-cascader v-model="addform.majorclass" placeholder="专业班级" @change="handleChange2"-->
+<!--                       :props="defaultProps" :options="classes"  :show-all-levels="false"></el-cascader>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="出生年月" :label-width="formLabelWidth" prop="birthday">-->
+<!--          <el-date-picker  format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" v-model="addform.birthday" type="date" placeholder="选择日期"></el-date-picker>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="家庭住址" :label-width="formLabelWidth" prop="address">-->
+<!--          <el-input v-model="addform.address" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="备注" :label-width="formLabelWidth" prop="remark">-->
+<!--          <el-input v-model="addform.remark" autocomplete="off"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item :label-width="formLabelWidth">-->
+<!--          <el-button @click="addDialogFormVisible = false">取消</el-button>-->
+<!--          <el-button @click="addData('addform')" type="primary">确认</el-button>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--    </el-dialog>-->
+
+  </div>
+</template>
+
+<script>
+import {selectAllUser,deleteUser,userRegister} from '@/api/user'
+// import {selectMajorClass} from '../../api/classes'
+
+
+export default {
+  created() {
+    this.getAllList()
+    // this.selectAllClassesa()
+  },
+  data() {
+    return {
+      defaultProps: {
+        children: 'children',
+        label: 'name',
+        value: 'id',
+      },
+      sexs:[
+        {id:'男',name:'男'},
+        {id:'女',name:'女'},
+      ],
+
+      classes:[],
+      searchParam: {
+        pageSize:10,
+        pageNum:1,
+        role:'1'
+      },
+      total:0,
+      tableData: [],
+
+      addDialogFormVisible:false,
+      formLabelWidth:'120px',
+      addform:{},
+      addformrules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        realname: [
+          { required: true, message: '请输入真实姓名', trigger: 'blur' },
+        ],
+        usercode: [
+          { required: true, message: '请输入学号', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+        ],
+        // phone: [
+        //   { required: true, message: '请输入联系方式', trigger: 'blur' },
+        // ],
+        sex: [
+          { required: true, message: '请选择性别', trigger: 'blur' },
+        ],
+        // majorclass: [
+        //   { required: true, message: '请选择专业班级', trigger: 'blur' },
+        // ],
+        // birthday: [
+        //   { required: true, message: '请输入出生年月', trigger: 'blur' },
+        // ],
+      },
+    }
+  },
+  methods: {
+    handleChange(value) {
+      if(value.length >1) {
+        this.searchParam.classesId = value[1]
+      }
+    },
+    handleChange2(value) {
+      this.addform.majorId = value[0]
+      if(value.length >1) {
+        this.addform.classesId = value[1]
+      }
+    },
+
+    // 删除学生
+    delData(id) {
+      this.$confirm('确定要删除该用户吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteUser (id).then(res => {
+          let code = res.data.code
+          if(code == 200) {
+            this.getAllList()
+            this.$message({ showClose: true, message: '删除成功!', type: 'success'});
+          }else {
+            this.$message({ showClose: true, message: '删除失败，请重试!', type: 'error'});
+          }
+        }).catch(() => {
+          console.log("===管理员删除异常===")
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
+    selectAllClassesa() {
+      selectMajorClass().then(res => {
+        let code = res.data.code
+        if(code == 200) {
+          this.classes = res.data.data
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch(() => {
+        console.log("===error===")
+      })
+    },
+
+    // 获取所有信息
+    getAllList(){
+      selectAllUser (this.searchParam).then(res => {
+        let code = res.data.code
+        if(code == 200) {
+          this.tableData = res.data.data.list
+          this.total = res.data.data.total
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch(() => {
+        console.log("===error===")
+      })
+    },
+    handleCurrentChange(val) {
+      this.searchParam.pageNum = val
+      this.getAllList()
+    },
+    toAdd() {
+      this.addform = {}
+      this.addDialogFormVisible = true
+    },
+    toUpdate(form) {
+      this.addform = JSON.parse(JSON.stringify(form))
+      this.addform.majorclass = []
+      this.addform.majorclass.push(this.addform.majorId)
+      this.addform.majorclass.push(this.addform.classesId)
+      this.addDialogFormVisible = true
+    },
+
+    // 添加学生
+    addData(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          userRegister (this.addform).then(res => {
+            let code = res.data.code
+            if(code == 200) {
+              this.getAllList()
+              this.$message({ showClose: true, message: '成功!', type: 'success'});
+              this.addDialogFormVisible = false
+            }else {
+              this.$message({ showClose: true, message: res.data.message, type: 'error'});
+            }
+          }).catch(() => {
+            console.log("===error===")
+          })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+  }
+}
+</script>
+
+<style scoped>
+
+.el-input {
+  width: 180px;
+  height: 50px;
+}
+
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 90px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
+
+.li_style {
+  font-size: 16px;
+  line-height: 28px;
+}
+</style>
