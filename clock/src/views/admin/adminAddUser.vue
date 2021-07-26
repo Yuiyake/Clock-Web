@@ -115,17 +115,18 @@ export default {
       console.log(this.ruleForm)
       this.$refs[ruleForm].validate((valid) => {
         if (valid) {
-          userRegister (this.addform).then(res => {
+          userRegister (this.ruleForm).then(res => {
             let code = res.data.code
             if(code == 200) {
-              this.getAllList()
+          console.log('register')
+              // this.getAllList()
               this.$message({ showClose: true, message: '成功!', type: 'success'});
               this.addDialogFormVisible = false
             }else {
               this.$message({ showClose: true, message: res.data.message, type: 'error'});
             }
-          }).catch(() => {
-            console.log("===error===")
+          }).catch((err) => {
+            console.log(err)
           })
         } else {
           console.log('error submit!!');
