@@ -33,3 +33,11 @@ export function deleteUser(data) {
         }
     })
 }
+
+export function updateUser(data) {
+    return service({
+        method: 'post',
+        url: '/user/updateUser',
+        data: data
+    })
+}
