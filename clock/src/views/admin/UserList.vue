@@ -37,8 +37,39 @@
       <el-pagination :page-size="10" background layout="prev, pager, next"
                      @current-change="handleCurrentChange"
                      :current-page.sync="searchParam.pageNum"
-                     :total="total"></el-pagination>
+                     :total="total">
+      </el-pagination>
     </div>
+    <el-dialog title="用户信息" width="40%" :visible.sync="addDialogFormVisible">
+      <el-form :model="addform" :rules="addformrules" ref="addform" >
+        <el-form-item label="用户名" :label-width="formLabelWidth" prop="username">
+          <el-input v-model="addform.username" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="学号" :label-width="formLabelWidth" prop="account">
+          <el-input v-model="addform.account" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="权限" :label-width="formLabelWidth" prop="role">
+          <el-select clearable v-model="addform.role"  >
+            <el-option v-for="item in roles" :key="item.rid" :label="item.rname" :value="item.rid"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
+          <el-select clearable v-model="addform.sex"  >
+            <el-option v-for="item in sexs" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
+          <el-input show-password v-model="addform.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="状态" :label-width="formLabelWidth" prop="state">
+          <el-input v-model="addform.state" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth">
+          <el-button @click="addDialogFormVisible = false">取消</el-button>
+          <el-button @click="addData('addform')" type="primary">确认</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 
   </div>
 </template>
@@ -75,8 +106,14 @@ export default {
         value: 'id',
       },
       sexs:[
-        {id:'男',name:'男'},
-        {id:'女',name:'女'},
+        {id:'0',name:'男'},
+        {id:'1',name:'女'},
+      ],
+
+      roles:[
+        {rid:'0', rname:'超管'},
+        {rid:'1', rname:'小组长'},
+        {rid:'2', rname:'普通用户'},
       ],
 
       // classes:[],
@@ -104,18 +141,9 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
         ],
-        // phone: [
-        //   { required: true, message: '请输入联系方式', trigger: 'blur' },
-        // ],
         sex: [
           { required: true, message: '请选择性别', trigger: 'blur' },
         ],
-        // majorclass: [
-        //   { required: true, message: '请选择专业班级', trigger: 'blur' },
-        // ],
-        // birthday: [
-        //   { required: true, message: '请输入出生年月', trigger: 'blur' },
-        // ],
       },
     }
   },
