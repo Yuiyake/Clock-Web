@@ -9,6 +9,9 @@
           <el-option label="普通用户" value="3" ></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="id" prop="id">
+        <el-input v-model="ruleForm.id"></el-input>
+      </el-form-item>
       <el-form-item label="用户名" prop="username">
         <el-input v-model="ruleForm.username"></el-input>
       </el-form-item>
@@ -68,7 +71,7 @@ export default {
   data() {
     return {
       ruleForm: {
-        id: 3,
+        id: null,
         username: '',
         sex: '',
         role: '',

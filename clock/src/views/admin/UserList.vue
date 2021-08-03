@@ -259,7 +259,7 @@ export default {
     addData(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          userRegister (this.addform).then(res => {
+          updateUser(this.addform).then(res => {
             let code = res.data.code
             if(code == 200) {
               this.getAllList()
