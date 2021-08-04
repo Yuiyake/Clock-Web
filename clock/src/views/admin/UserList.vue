@@ -24,6 +24,7 @@
 <!--        <el-table-column label="联系方式" prop="phone"></el-table-column>-->
 <!--        <el-table-column label="家庭住址" prop="address"></el-table-column>-->
         <el-table-column label="创建时间" prop="createtime"></el-table-column>
+        <el-table-column label="状态" prop="state" width="100"></el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
 <!--            <el-button @click="delData(scope.row.id)" type="danger" size="small">禁用</el-button>-->
@@ -120,7 +121,8 @@ export default {
       searchParam: {
         pageSize:10,
         pageNum:1,
-        role:'1'
+        role:'1',
+        // state: '0'
       },
       total:0,
       tableData: [],
