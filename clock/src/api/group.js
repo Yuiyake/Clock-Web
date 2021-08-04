@@ -7,3 +7,11 @@ export function selectAllGroups(data) {
         data: data
     })
 }
+
+export function updateGroup(data) {
+    return service({
+        method: 'post',
+        url: '/group/updateGroup',
+        data: data
+    })
+}
