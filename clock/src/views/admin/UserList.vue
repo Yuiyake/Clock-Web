@@ -214,19 +214,6 @@ export default {
       })
     },
 
-    selectAllClassesa() {
-      selectMajorClass().then(res => {
-        let code = res.data.code
-        if(code == 200) {
-          this.classes = res.data.data
-        }else {
-          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
-        }
-      }).catch(() => {
-        console.log("===error===")
-      })
-    },
-
     // 获取所有信息
     getAllList(){
       selectAllUser (this.searchParam).then(res => {

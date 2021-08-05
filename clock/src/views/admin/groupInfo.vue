@@ -30,7 +30,7 @@
     </div>
     <div>
       <el-dialog title="小组信息" width="40%" :visible.sync="addDialogFormVisible">
-        <el-form :model="addform" :rules="addformrules" ref="addform" >
+        <el-form :model="addform" ref="addform" >
 <!--          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="colcktype">-->
 <!--            <el-select v-model="addform.colcktype" clearable placeholder="请选择">-->
 <!--              <el-option v-for="item in colcktype" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
@@ -82,23 +82,23 @@ export default {
       addDialogFormVisible:false,
       formLabelWidth:'120px',
       addform:{},
-      addformrules: {
-        majorId: [
-          { required: true, message: '请选择专业', trigger: 'blur' },
-        ],
-        name: [
-          { required: true, message: '请输入班级名称', trigger: 'blur' },
-        ],
-        joinYear: [
-          { required: true, message: '请输入入学年份', trigger: 'blur' },
-        ],
-        studentNum: [
-          { required: true, message: '请输入学生数量', trigger: 'blur' },
-        ],
-        teacher: [
-          { required: true, message: '请输入辅导员', trigger: 'blur' },
-        ],
-      },
+      // addformrules: {
+      //   majorId: [
+      //     { required: true, message: '请选择专业', trigger: 'blur' },
+      //   ],
+      //   name: [
+      //     { required: true, message: '请输入班级名称', trigger: 'blur' },
+      //   ],
+      //   joinYear: [
+      //     { required: true, message: '请输入入学年份', trigger: 'blur' },
+      //   ],
+      //   studentNum: [
+      //     { required: true, message: '请输入学生数量', trigger: 'blur' },
+      //   ],
+      //   teacher: [
+      //     { required: true, message: '请输入辅导员', trigger: 'blur' },
+      //   ],
+      // },
     }
   },
   created() {

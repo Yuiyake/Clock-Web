@@ -14,26 +14,12 @@
         <el-table-column label="人数" prop="tnum"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button @click="changeType(scope.$index, scope.row.tid)" size="small"  type="primary">修改</el-button>
+<!--            <el-button @click="changeType(scope.$index, scope.row.tid)" size="small"  type="primary">修改</el-button>-->
+            <el-button @click="changeType(scope.row)" size="small"  type="primary">修改</el-button>
             <el-button @click="delType(scope.row.tid)" size="small" type="danger">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-    </div>
-
-<!--    添加弹窗-->
-    <div>
-      <el-dialog title="新增类型" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="类型名称" :label-width="formLabelWidth">
-            <el-input v-model="form.tname" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-        </div>
-      </el-dialog>
     </div>
 
 <!--    分页-->
@@ -46,29 +32,38 @@
       </el-pagination>
     </div>
 
-<!--    编辑弹窗-->
+<!--    添加弹窗-->
     <div>
-      <el-dialog title="编辑" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="类型id" :label-width="formLabelWidth">
-            <el-input v-model="form.tid" autocomplete="off"></el-input>
-          </el-form-item>
+      <el-dialog title="新增类型" :visible.sync="dialogFormVisible">
+        <el-form :model="addform">
           <el-form-item label="类型名称" :label-width="formLabelWidth">
-            <el-input v-model="form.tname" autocomplete="off"></el-input>
+            <el-input v-model="addform.tname" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="类型人数" :label-width="formLabelWidth">
-            <el-input v-model="form.tnum" autocomplete="off"></el-input>
-          </el-form-item>
-          <!--          <el-form-item label="活动区域" :label-width="formLabelWidth">-->
-          <!--            <el-select v-model="form.region" placeholder="请选择活动区域">-->
-          <!--              <el-option label="区域一" value="shanghai"></el-option>-->
-          <!--              <el-option label="区域二" value="beijing"></el-option>-->
-          <!--            </el-select>-->
-          <!--          </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">提 交</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+
+<!--    编辑弹窗-->
+    <div>
+      <el-dialog title="编辑" :visible.sync="dialogFormVisible">
+        <el-form :model="addform"  ref="addform">
+          <el-form-item label="类型id" :label-width="formLabelWidth">
+            <el-input v-model="addform.tid" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="类型名称" :label-width="formLabelWidth">
+            <el-input v-model="addform.tname" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="类型人数" :label-width="formLabelWidth">
+            <el-input v-model="addform.tnum" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="updateType('addform')">提 交</el-button>
         </div>
       </el-dialog>
     </div>
@@ -95,13 +90,14 @@ export default {
       tableData: [],
 
 
-      form: {
-        tname: '',
-        region: '',
-        type: [],
-        resource: '',
-        desc: ''
-      },
+      addform: {},
+      // form: {
+      //   tname: '',
+      //   region: '',
+      //   type: [],
+      //   resource: '',
+      //   desc: ''
+      // },
       formLabelWidth: '120px'
     }
   },
@@ -110,7 +106,6 @@ export default {
   },
   methods: {
     getType() {
-      console.log("模糊查询")
       selectAllType(this.searchParam).then(res => {
         let code = res.data.code
         if(code == 200) {
@@ -121,13 +116,34 @@ export default {
           this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
         }
       }).catch(() => {
-        console.log("==error===")
+        console.log("===error===")
       })
     },
-    changeType(index, row) {
-      console.log("修改")
+    changeType(form) {
+      this.addform = JSON.parse(JSON.stringify(form))
       this.dialogFormVisible = true;
-      this.form = Object.assign({}, row);
+      // this.form = Object.assign([], row);
+    },
+    updateType(tableData){
+      // this.tableData = JSON.parse(JSON.stringify(tableData))
+      this.$refs[tableData].validate((valid) => {
+        if (valid){
+          updateType(this.addform).then((res) => {
+            let code = res.data.code
+            if (code == 200) {
+              this.getType()
+              this.$message({showClose: true, message: '成功！', type: 'success'});
+            }else {
+              this.$message({showClose: true, message: res.data.message, type: 'error'});
+            }
+          }).catch((err) => {
+            console.log(err)
+          })
+        } else {
+          console.log('error summit!');
+          return false;
+        }
+      })
     },
     delType() {
       console.log("删除")
