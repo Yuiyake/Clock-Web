@@ -17,6 +17,7 @@
 <!--            <el-button @click="changeType(scope.$index, scope.row.tid)" size="small"  type="primary">修改</el-button>-->
             <el-button @click="changeType(scope.row)" size="small"  type="primary">修改</el-button>
             <el-button @click="delType(scope.row.tid)" size="small" type="danger">删除</el-button>
+<!--            <el-button @click="delType(this.tableData)" size="small" type="danger">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -71,8 +72,9 @@
 </template>
 
 <script>
-import {selectAllType, updateType} from '@/api/type'
+import {selectAllType, updateType, deleteType} from '@/api/type'
 import {selectAllGroups} from "@/api/group";
+import {deleteUser} from "@/api/user";
 export default {
   name: "typeInfo",
   data() {
@@ -145,8 +147,31 @@ export default {
         }
       })
     },
-    delType() {
+    delType(tid) {
       console.log("删除")
+      this.$confirm('确定要删除该用户吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deleteType (tid).then(res => {
+          let code = res.data.code
+          if(code == 200) {
+            this.getType()
+            this.$message({ showClose: true, message: '删除成功!', type: 'success'});
+          }else {
+            this.$message({ showClose: true, message: '删除失败，请重试!', type: 'error'});
+          }
+        }).catch((err) => {
+          console.log("===管理员删除异常===")
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
     handleCurrentChange(val) {
       this.searchParam.pageNum = val

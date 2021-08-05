@@ -28,8 +28,8 @@
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
 <!--            <el-button @click="delData(scope.row.id)" type="danger" size="small">禁用</el-button>-->
-            <el-button @click="updateData(this.tableData)" type="danger" size="small">禁用</el-button>
             <el-button @click="toUpdate(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="updateData(this.tableData)" type="danger" size="small">禁用</el-button>
           </template>
         </el-table-column>
       </el-table>

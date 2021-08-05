@@ -15,3 +15,13 @@ export function updateType(data) {
         data: data
     })
 }
+
+export function deleteType(tid) {
+    return service({
+        method: 'get',
+        url: '/type/deleteType',
+        params: {
+            tid: tid
+        }
+    })
+}
