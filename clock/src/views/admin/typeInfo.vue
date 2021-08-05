@@ -28,12 +28,6 @@
           <el-form-item label="类型名称" :label-width="formLabelWidth">
             <el-input v-model="form.tname" autocomplete="off"></el-input>
           </el-form-item>
-<!--          <el-form-item label="活动区域" :label-width="formLabelWidth">-->
-<!--            <el-select v-model="form.region" placeholder="请选择活动区域">-->
-<!--              <el-option label="区域一" value="shanghai"></el-option>-->
-<!--              <el-option label="区域二" value="beijing"></el-option>-->
-<!--            </el-select>-->
-<!--          </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -41,10 +35,24 @@
         </div>
       </el-dialog>
     </div>
+
+<!--    分页-->
+    <div style="padding-top:20px;width:80%;float:left">
+      <el-pagination :page-size="10" background layout="prev, pager, next"
+                     @current-change="handleCurrentChange"
+                     :current-page.sync="searchParam.pageNum"
+                     :total="total">
+
+      </el-pagination>
+    </div>
+
 <!--    编辑弹窗-->
     <div>
       <el-dialog title="编辑" :visible.sync="dialogFormVisible">
         <el-form :model="form">
+          <el-form-item label="类型id" :label-width="formLabelWidth">
+            <el-input v-model="form.tid" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item label="类型名称" :label-width="formLabelWidth">
             <el-input v-model="form.tname" autocomplete="off"></el-input>
           </el-form-item>
@@ -68,6 +76,8 @@
 </template>
 
 <script>
+import {selectAllType, updateType} from '@/api/type'
+import {selectAllGroups} from "@/api/group";
 export default {
   name: "typeInfo",
   data() {
@@ -76,19 +86,18 @@ export default {
       searchList: {
         tid: ''
       },
-      tableData: [
-        {
-          tid: 1,
-          tname: '学习',
-          tnum: 122
-        }
-      ],
+      searchParam: {
+        pageSize:10,
+        pageNum:1,
+        isPage:'1'
+      },
+      total:0,
+      tableData: [],
+
+
       form: {
         tname: '',
         region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
         type: [],
         resource: '',
         desc: ''
@@ -96,9 +105,24 @@ export default {
       formLabelWidth: '120px'
     }
   },
+  created() {
+    this.getType()
+  },
   methods: {
     getType() {
       console.log("模糊查询")
+      selectAllType(this.searchParam).then(res => {
+        let code = res.data.code
+        if(code == 200) {
+          this.tableData = res.data.data.list
+          console.log(this.tableData)
+          this.total = res.data.data.total
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch(() => {
+        console.log("==error===")
+      })
     },
     changeType(index, row) {
       console.log("修改")
@@ -107,7 +131,11 @@ export default {
     },
     delType() {
       console.log("删除")
-    }
+    },
+    handleCurrentChange(val) {
+      this.searchParam.pageNum = val
+      this.getType()
+    },
   }
 }
 </script>

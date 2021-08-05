@@ -8,7 +8,7 @@
     <!--    表格-->
     <div style="float:left;padding-top:20px;width:98%">
       <el-table stripe :data="tableData" style="width: 100%">
-        <el-table-column type="index"  width="200"></el-table-column>
+<!--        <el-table-column type="index"  width="200"></el-table-column>-->
         <el-table-column label="小组编号" prop="gid"></el-table-column>
         <el-table-column label="小组名称" prop="gname"></el-table-column>
         <el-table-column label="打卡类型" prop="clocktype"></el-table-column>
@@ -31,16 +31,19 @@
     <div>
       <el-dialog title="小组信息" width="40%" :visible.sync="addDialogFormVisible">
         <el-form :model="addform" :rules="addformrules" ref="addform" >
-          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="colcktype">
-            <el-select v-model="addform.colcktype" clearable placeholder="请选择">
-              <el-option v-for="item in colcktype" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select>
+<!--          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="colcktype">-->
+<!--            <el-select v-model="addform.colcktype" clearable placeholder="请选择">-->
+<!--              <el-option v-for="item in colcktype" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
+          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="clocktype">
+            <el-input v-model="addform.clocktype" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="小组编号" :label-width="formLabelWidth" prop="gid">
             <el-input v-model="addform.gid" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="小组名称" :label-width="formLabelWidth" prop="tname">
-            <el-input v-model="addform.tname" autocomplete="off"></el-input>
+          <el-form-item label="小组名称" :label-width="formLabelWidth" prop="gname">
+            <el-input v-model="addform.gname" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="成员数量" :label-width="formLabelWidth" prop="gNum">
             <el-input v-model="addform.gNum" autocomplete="off"></el-input>
@@ -109,7 +112,6 @@ export default {
       console.log('删除')
     },
     getAllList() {
-      console.log('run select')
       selectAllGroups (this.searchParam).then(res => {
         let code = res.data.code
         if(code == 200) {
@@ -129,10 +131,12 @@ export default {
     },
     toUpdate(form) {
       this.addform = JSON.parse(JSON.stringify(form))
+            console.log(this.addform)
       this.addDialogFormVisible = true
     },
     addData(formName) {
       this.$refs[formName].validate((valid) => {
+            console.log(this.addform)
         if (valid) {
           updateGroup(this.addform).then(res => {
             let code = res.data.code
