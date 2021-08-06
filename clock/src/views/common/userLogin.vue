@@ -81,9 +81,12 @@ export default {
           userLogin (this.searchData).then(res => {
             console.log(2)
               this.$message({ showClose: true, message: '登陆成功!', type: 'success'});
+            // 存储本地信息，key为suser
               localStorage.setItem('suser', JSON.stringify(res.data.data));
               if(res.data.data.role == '0') {
                 this.$router.push({path:`/adminMain`})
+              }else{
+                this.$router.push({path:`/userMain`})
               }
           }).catch(() => {
             console.log("===异常===")

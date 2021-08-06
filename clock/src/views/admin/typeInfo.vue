@@ -135,6 +135,7 @@ export default {
             if (code == 200) {
               this.getType()
               this.$message({showClose: true, message: '成功！', type: 'success'});
+              this.dialogFormVisible = false;
             }else {
               this.$message({showClose: true, message: res.data.message, type: 'error'});
             }
@@ -149,7 +150,7 @@ export default {
     },
     delType(tid) {
       console.log("删除")
-      this.$confirm('确定要删除该用户吗?', '提示', {
+      this.$confirm('确定要删除该类型吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
