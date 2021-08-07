@@ -12,7 +12,7 @@
 
     <div style="float:left;padding-top:20px;width:98%">
       <el-table stripe :data="tableData" style="width: 100%" :ref="tableData" :model="tableData">
-        <el-table-column label="id" prop="id"  width="200"></el-table-column>
+        <el-table-column label="id" prop="id"  width="100"></el-table-column>
         <el-table-column label="用户名" prop="username"></el-table-column>
         <el-table-column label="学号" prop="account"></el-table-column>
         <el-table-column label="权限" prop="role"></el-table-column>
@@ -87,19 +87,6 @@ export default {
   },
   data() {
     return {
-      // tableData: {
-      //   id: '',
-      //   username: '',
-      //   sex: '',
-      //   role: '',
-      //   account: '',
-      //   password: '',
-      //   createtime: '',
-      //   type_id: '',
-      //   group_id: '',
-      //   state: '',
-      //   uavg: '',
-      // },
 
       defaultProps: {
         children: 'children',
