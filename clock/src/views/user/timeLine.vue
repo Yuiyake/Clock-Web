@@ -125,8 +125,9 @@ export default {
       console.log(this.dynamicData.uid)
       selectThisDynamic(this.dynamicData.uid).then(res => {
         let code = res.data.code
+        console.log(res.data.data)
         if (code == 200){
-          this.dynamicData = res.data.data.list
+          this.dynamicData = res.data.data
           console.log(this.dynamicData)
           this.$message({showClose:true, message:'成功', type:'success'})
         } else {

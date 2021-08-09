@@ -4,7 +4,7 @@
 <!--    <div>-->
 <!--      <p>-->
 <!--        If Element is successfully added to this project, you'll see an-->
-<!--        <code v-text="'<el-button>'"></code>-->
+<!--        <code v-text="'<el-button>'"></code>-->npm
 <!--        below-->
 <!--      </p>-->
 <!--      <el-button>el-button</el-button>-->

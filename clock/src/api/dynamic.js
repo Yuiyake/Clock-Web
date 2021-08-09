@@ -12,7 +12,9 @@ export function selectThisDynamic(uid) {
     return service({
         method: 'post',
         url: '/dynamic/selectThisDynamic',
-        uid: uid
+        params: {
+            uid: uid
+        }
     })
 }
 
