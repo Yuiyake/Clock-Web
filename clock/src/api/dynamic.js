@@ -8,6 +8,14 @@ export function selectAllDynamic(data) {
     })
 }
 
+export function selectThisDynamic(uid) {
+    return service({
+        method: 'post',
+        url: '/dynamic/selectThisDynamic',
+        uid: uid
+    })
+}
+
 export function updateDynamic(data) {
     return service({
         method: 'post',
