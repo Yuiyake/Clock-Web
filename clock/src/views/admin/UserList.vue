@@ -11,7 +11,7 @@
 
 
     <div style="float:left;padding-top:20px;width:98%">
-      <el-table stripe :data="tableData" style="width: 100%" :ref="tableData" :model="tableData" class="table-box">
+      <el-table stripe :data="tableData" style="width: 100%" :ref="tableData" :model="tableData" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="id" prop="id"  width="100"></el-table-column>
         <el-table-column label="用户名" prop="username"></el-table-column>
         <el-table-column label="学号" prop="account"></el-table-column>
@@ -282,7 +282,4 @@ export default {
   line-height: 28px;
 }
 
-.table-box {
-  text-align: center;
-}
 </style>
