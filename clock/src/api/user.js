@@ -24,6 +24,14 @@ export function selectAllUser(data) {
     })
 }
 
+export function selectForbidUser(data) {
+    return service({
+        method: 'post',
+        url: '/user/selectForbidUser',
+        data: data
+    })
+}
+
 export function deleteUser(data) {
     return service({
         method: 'get',
@@ -39,5 +47,25 @@ export function updateUser(data) {
         method: 'post',
         url: '/user/updateUser',
         data: data
+    })
+}
+
+export function forbidUser(id) {
+    return service({
+        method: 'post',
+        url: '/user/forbidUser',
+        params: {
+            id: id
+        }
+    })
+}
+
+export function recoveryUser(data) {
+    return service({
+        method: 'post',
+        url: '/user/recoveryUser',
+        params: {
+            id: data
+        }
     })
 }

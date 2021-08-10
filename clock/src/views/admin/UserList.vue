@@ -29,7 +29,7 @@
           <template slot-scope="scope">
 <!--            <el-button @click="delData(scope.row.id)" type="danger" size="small">禁用</el-button>-->
             <el-button @click="toUpdate(scope.row)" type="primary" size="small">编辑</el-button>
-            <el-button @click="updateData(this.tableData)" type="danger" size="small">禁用</el-button>
+            <el-button @click="forbidden(scope.row.id)" type="danger" size="small">禁用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import {selectAllUser,deleteUser,userRegister,updateUser} from '@/api/user'
+import {selectAllUser,deleteUser,userRegister,updateUser,forbidUser} from '@/api/user'
 // import {selectMajorClass} from '../../api/classes'
 
 
@@ -176,7 +176,7 @@ export default {
     },
 
     updateData(tableData) {
-      this.tableData.state = '1'
+      // this.tableData.state = '1'
       this.tableData = JSON.parse(JSON.stringify(tableData))
       this.tableData.majorclass = []
       this.tableData.majorclass.push(this.tableData.state)
@@ -253,6 +253,31 @@ export default {
         }
       });
     },
+    forbidden(id) {
+      this.$confirm('确定要禁用该用户吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        forbidUser(id).then(res => {
+          let code = res.data.code
+          if(code == 200) {
+            this.getAllList()
+            this.$message({ showClose: true, message: '禁用成功!', type: 'success'});
+          }else {
+            this.$message({ showClose: true, message: '禁用失败，请重试!', type: 'error'});
+          }
+        }).catch(() => {
+          console.log("===管理员禁用异常===")
+        })
+      }).catch((err) => {
+        console.log(err)
+        this.$message({
+          type: 'info',
+          message: '已取消禁用'
+        });
+      });
+    }
   }
 }
 </script>
