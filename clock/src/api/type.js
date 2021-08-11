@@ -8,6 +8,14 @@ export function selectAllType(data) {
     })
 }
 
+export function addType(data) {
+    return service({
+        method: 'post',
+        url: '/type/addType',
+        data: data
+    })
+}
+
 export function updateType(data) {
     return service({
         method: 'post',

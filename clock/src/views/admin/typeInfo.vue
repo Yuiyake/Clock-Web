@@ -4,7 +4,7 @@
     <div style="width: 100%">
       <el-input v-model="searchList.tid" placeholder="类型编号" clearable></el-input>
       <el-button @click="getType" type="primary">查询</el-button>
-      <el-button @click="dialogFormVisible = true" type="primary">新增</el-button>
+      <el-button @click="changeAddType" type="primary">新增</el-button>
     </div>
     <!--    表格-->
     <div style="float: left; padding-top: 20px; width: 98%">
@@ -35,15 +35,21 @@
 
 <!--    添加弹窗-->
     <div>
-      <el-dialog title="新增类型" :visible.sync="dialogFormVisible">
-        <el-form :model="addform">
+      <el-dialog title="新增类型" :visible.sync="addDialogFormVisible">
+        <el-form :model="addform" ref="addform">
+          <el-form-item label="类型id" :label-width="formLabelWidth">
+            <el-input v-model="addform.tid" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item label="类型名称" :label-width="formLabelWidth">
             <el-input v-model="addform.tname" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="类型人数" :label-width="formLabelWidth">
+            <el-input v-model="addform.tnum" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="addToType('addform')">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -72,14 +78,15 @@
 </template>
 
 <script>
-import {selectAllType, updateType, deleteType} from '@/api/type'
+import {selectAllType, updateType, deleteType, addType} from '@/api/type'
 import {selectAllGroups} from "@/api/group";
-import {deleteUser} from "@/api/user";
+import {deleteUser, userRegister} from "@/api/user";
 export default {
   name: "typeInfo",
   data() {
     return{
       dialogFormVisible: false,
+      addDialogFormVisible: false,
       searchList: {
         tid: ''
       },
@@ -126,6 +133,10 @@ export default {
       this.dialogFormVisible = true;
       // this.form = Object.assign([], row);
     },
+    changeAddType() {
+
+      this.addDialogFormVisible = true;
+    },
     updateType(tableData){
       // this.tableData = JSON.parse(JSON.stringify(tableData))
       this.$refs[tableData].validate((valid) => {
@@ -147,6 +158,27 @@ export default {
           return false;
         }
       })
+    },
+    addToType(tableData){
+      this.$refs[tableData].validate((valid) => {
+        if (valid) {
+          addType (this.addform).then(res => {
+            let code = res.data.code
+            if(code == 200) {
+              this.getType()
+              this.$message({ showClose: true, message: '成功!', type: 'success'});
+              this.addDialogFormVisible = false
+            }else {
+              this.$message({ showClose: true, message: res.data.message, type: 'error'});
+            }
+          }).catch((err) => {
+            console.log(err)
+          })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
     delType(tid) {
       console.log("删除")
