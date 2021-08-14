@@ -8,7 +8,7 @@
     </div>
     <!--    表格-->
     <div style="float: left; padding-top: 20px; width: 98%">
-      <el-table stripe :data="tableData" style="width: 100%">
+      <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="tid" prop="tid"></el-table-column>
         <el-table-column label="类型名" prop="tname"></el-table-column>
         <el-table-column label="人数" prop="tnum"></el-table-column>

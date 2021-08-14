@@ -16,7 +16,7 @@
     </div>
     <!--    表格-->
     <div style="float: left; padding-top: 20px; width: 98%">
-      <el-table stripe :data="tableData" style="width: 100%">
+      <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column type="expand">
           <template slot-scope="props">
             <el-form label-position="left" inline class="demo-table-expand">

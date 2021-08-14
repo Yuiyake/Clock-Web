@@ -7,7 +7,7 @@
     </div>
     <!--    表格-->
     <div style="float:left;padding-top:20px;width:98%">
-      <el-table stripe :data="tableData" style="width: 100%">
+      <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
 <!--        <el-table-column type="index"  width="200"></el-table-column>-->
         <el-table-column label="小组编号" prop="gid"></el-table-column>
         <el-table-column label="小组名称" prop="gname"></el-table-column>

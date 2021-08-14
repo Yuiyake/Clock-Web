@@ -8,7 +8,7 @@
     </div>
     <!--    表格-->
     <div style="float: left; padding-top: 20px; width: 98%">
-      <el-table stripe :data="tableData" style="width: 100%">
+      <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="id" prop="id"></el-table-column>
         <el-table-column label="账号" prop="account"></el-table-column>
         <el-table-column label="用户名" prop="username"></el-table-column>
@@ -154,4 +154,5 @@ export default {
   font-size: 16px;
   line-height: 28px;
 }
+
 </style>
