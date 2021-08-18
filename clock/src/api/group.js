@@ -8,6 +8,14 @@ export function selectAllGroups(data) {
     })
 }
 
+export function userAddGroup(data){
+    return service({
+        method: 'post',
+        url: '/group/userAddGroup',
+        data: data
+    })
+}
+
 export function selectMyGroups(uid) {
     return service({
         method: 'post',
@@ -43,6 +51,27 @@ export  function changeGnum(gid) {
         url: '/group/changeGnum',
         params: {
             gid: gid
+        }
+    })
+}
+
+export function userQuitGroup(uid, gid){
+    return service({
+        method: 'delete',
+        url: '/group/userQuitGroup',
+        params: {
+            uid: uid,
+            gid: gid,
+        }
+    })
+}
+
+export function userDeleteGnum(gid){
+    return service({
+        method: 'post',
+        url: '/group/userDeleteGnum',
+        params: {
+            gid: gid,
         }
     })
 }

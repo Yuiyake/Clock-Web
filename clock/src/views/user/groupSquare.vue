@@ -34,26 +34,26 @@
     <div>
       <el-dialog title="小组信息" width="40%" :visible.sync="addDialogFormVisible">
         <el-form :model="addform" ref="addform" >
-          <!--          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="colcktype">-->
-          <!--            <el-select v-model="addform.colcktype" clearable placeholder="请选择">-->
-          <!--              <el-option v-for="item in colcktype" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
-          <!--            </el-select>-->
-          <!--          </el-form-item>-->
-          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="clocktype">
-            <el-input v-model="addform.clocktype" autocomplete="off"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="colcktype">-->
+<!--            <el-select v-model="addform.colcktype" clearable placeholder="请选择">-->
+<!--              <el-option v-for="item in colcktype" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
           <el-form-item label="小组编号" :label-width="formLabelWidth" prop="gid">
             <el-input v-model="addform.gid" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="小组名称" :label-width="formLabelWidth" prop="gname">
             <el-input v-model="addform.gname" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="成员数量" :label-width="formLabelWidth" prop="gNum">
-            <el-input v-model="addform.gnum" autocomplete="off"></el-input>
+          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="clocktype">
+            <el-input v-model="addform.clocktype" autocomplete="off"></el-input>
           </el-form-item>
+<!--          <el-form-item label="成员数量" :label-width="formLabelWidth" prop="gNum">-->
+<!--            <el-input v-model="addform.gnum" autocomplete="off"></el-input>-->
+<!--          </el-form-item>-->
           <el-form-item :label-width="formLabelWidth">
             <el-button @click="addDialogFormVisible = false">取消</el-button>
-            <el-button @click="updateToGroup('addform')" type="primary">确认</el-button>
+            <el-button @click="createNewGroup('addform')" type="primary">确认</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -63,7 +63,7 @@
 
 <script>
 
-import {selectAllGroups, updateGroup, userJoinGroup, changeGnum} from "@/api/group";
+import {selectAllGroups, updateGroup, userJoinGroup, changeGnum, userAddGroup} from "@/api/group";
 
 export default {
     name: "groupSquare",
@@ -74,6 +74,8 @@ export default {
         },
         colcktype: [
           {id: '1', name: '早起'},
+          {id: '2', name: '学习'},
+          {id: '3', name: '打游戏'}
         ],
         searchParam: {
           pageSize:10,
@@ -145,34 +147,35 @@ export default {
         this.addDialogFormVisible = true
       },
 
-      // updateToGroup(formName) {
-      //   this.$refs[formName].validate((valid) => {
-      //     console.log(this.addform)
-      //     if (valid) {
-      //       updateGroup(this.addform).then(res => {
-      //         let code = res.data.code
-      //         if(code == 200) {
-      //           this.getAllList()
-      //           this.$message({ showClose: true, message: '成功!', type: 'success'});
-      //           this.addDialogFormVisible = false
-      //         }else {
-      //           this.$message({ showClose: true, message: res.data.message, type: 'error'});
-      //         }
-      //       }).catch(() => {
-      //         console.log("==error===")
-      //       })
-      //     } else {
-      //       console.log('error submit!!');
-      //       return false;
-      //     }
-      //   });
-      // },
+      createNewGroup(formName) {
+        this.$refs[formName].validate((valid) => {
+          console.log(this.addform)
+          if (valid) {
+            userAddGroup(this.addform).then(res => {
+              let code = res.data.code
+              if(code == 200) {
+                this.getAllList()
+                this.$message({ showClose: true, message: '成功!', type: 'success'});
+                this.addDialogFormVisible = false
+              }else {
+                this.$message({ showClose: true, message: res.data.message, type: 'error'});
+              }
+            }).catch((err) => {
+              console.log(err)
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
 
       toUpdate(gid) {
         console.log(this.admin.id)
         userJoinGroup(this.admin.id, gid).then(res => {
           let code = res.data.code
           if (code == 200) {
+            this.getAllList();
             this.$message({showClose: true, message: '加入成功！', type: 'success'})
           } else{
             this.$message({showClose: true, message: '加入失败，请重试！', type: 'error'})

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-divider content-position="left">今天你打卡了吗</el-divider>
+    <el-divider content-position="left">今天你打卡了吗ε(○´∀｀)зε(´∀｀●)з</el-divider>
 <!--    &lt;!&ndash;    搜索栏&ndash;&gt;-->
 <!--    <div style="width: 100%">-->
 <!--      <el-input v-model="searchParam.id" placeholder="用户编号" clearable></el-input>-->
@@ -17,8 +17,8 @@
         <el-table-column label="我的打卡状态" prop="uclockstate"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button @click="clock(scope.row.id)" size="small"  type="primary">打卡</el-button>
-<!--            <el-button @click="delData(scope.row.id)" size="small" type="danger">删除</el-button>-->
+            <el-button @click="clock(scope.row.gid)" size="small"  type="primary">打卡</el-button>
+            <el-button @click="delData(scope.row.gid)" size="small" type="danger">退出</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -35,7 +35,8 @@
 </template>
 
 <script>
-import {selectMyGroups} from "@/api/group";
+import {selectMyGroups,userQuitGroup, userDeleteGnum} from "@/api/group";
+import {deleteUser} from "@/api/user";
 
 export default {
   name: "myGroup",
@@ -96,6 +97,43 @@ export default {
 
     clock(id) {
       console.log("点击打卡")
+    },
+
+    // 退出小组
+    delData(gid) {
+      this.$confirm('确定要退出该小组吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        userQuitGroup (this.admin.id, gid).then(res => {
+          let code = res.data.code
+          if(code == 200) {
+            this.getAllList()
+            this.$message({ showClose: true, message: '删除成功!', type: 'success'});
+          }else {
+            this.$message({ showClose: true, message: '删除失败，请重试!', type: 'error'});
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+
+        userDeleteGnum(gid).then(res => {
+          let code = res.data.code
+          if(code == 200) {
+            this.$message({ showClose: true, message: '更改小组信息成功!', type: 'success'});
+          }else {
+            this.$message({ showClose: true, message: '更改小组信息失败，请重试!', type: 'error'});
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消退出'
+        });
+      });
     },
 
   },
