@@ -5,6 +5,16 @@ const UserRouter = {
     component: () => import('../../views/user/Main'),
     children: [
         {
+            path: '/myGroup',
+            name: 'myGroup',
+            component: () => import('../../views/user/myGroup'),
+        },
+        {
+            path: '/groupSquare',
+            name: 'groupSquare',
+            component: () => import('../../views/user/groupSquare'),
+        },
+        {
             path: '/userMsg',
             name: 'userMsg',
             component: () => import('../../views/user/userMsg'),
@@ -19,6 +29,7 @@ const UserRouter = {
             name: 'userComment',
             component: () => import('../../views/user/userComment'),
         },
+
     ]
 }
 

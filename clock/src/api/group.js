@@ -8,6 +8,16 @@ export function selectAllGroups(data) {
     })
 }
 
+export function selectMyGroups(uid) {
+    return service({
+        method: 'post',
+        url: '/group/selectMyGroups',
+        params: {
+            uid: uid
+        }
+    })
+}
+
 export function updateGroup(data) {
     return service({
         method: 'post',

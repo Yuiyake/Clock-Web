@@ -8,11 +8,10 @@
     <!--    表格-->
     <div style="float:left;padding-top:20px;width:98%">
       <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
-<!--        <el-table-column type="index"  width="200"></el-table-column>-->
         <el-table-column label="小组编号" prop="gid"></el-table-column>
         <el-table-column label="小组名称" prop="gname"></el-table-column>
         <el-table-column label="打卡类型" prop="clocktype"></el-table-column>
-        <el-table-column label="成员数量" prop="gNum"></el-table-column>
+        <el-table-column label="成员数量" prop="gnum"></el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
             <el-button @click="toUpdate(scope.row)" type="text" size="small">编辑</el-button>
@@ -28,6 +27,8 @@
 
       </el-pagination>
     </div>
+
+<!--    添加小组弹窗-->
     <div>
       <el-dialog title="小组信息" width="40%" :visible.sync="addDialogFormVisible">
         <el-form :model="addform" ref="addform" >
@@ -46,7 +47,7 @@
             <el-input v-model="addform.gname" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="成员数量" :label-width="formLabelWidth" prop="gNum">
-            <el-input v-model="addform.gNum" autocomplete="off"></el-input>
+            <el-input v-model="addform.gnum" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item :label-width="formLabelWidth">
             <el-button @click="addDialogFormVisible = false">取消</el-button>
@@ -131,13 +132,14 @@ export default {
     },
     toUpdate(form) {
       this.addform = JSON.parse(JSON.stringify(form))
-            console.log(this.addform)
       this.addDialogFormVisible = true
     },
     addData(formName) {
       this.$refs[formName].validate((valid) => {
             console.log(this.addform)
         if (valid) {
+          parseInt(this.addform.gnum)
+          console.log( typeof (this.addform.gnum))
           updateGroup(this.addform).then(res => {
             let code = res.data.code
             if(code == 200) {

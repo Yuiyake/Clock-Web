@@ -26,8 +26,11 @@
               <el-form-item label="打卡类型">
                 <span>{{ props.row.tid }}</span>
               </el-form-item>
-              <el-form-item label="用户">
+              <el-form-item label="用户id">
                 <span>{{ props.row.uid }}</span>
+              </el-form-item>
+              <el-form-item label="用户名">
+                <span>{{ props.row.username }}</span>
               </el-form-item>
               <el-form-item label="发布时间">
                 <span>{{ props.row.dtime }}</span>

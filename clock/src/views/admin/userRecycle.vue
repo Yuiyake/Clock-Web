@@ -77,6 +77,7 @@ export default {
       this.searchParam.pageNum = val
       this.getAllList()
     },
+    // 用户复原
     recovery(id) {
       this.$confirm('确定要禁用该用户吗?', '提示', {
         confirmButtonText: '确定',
