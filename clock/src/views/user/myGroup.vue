@@ -1,19 +1,19 @@
 <template>
   <div>
     <el-divider content-position="left">今天你打卡了吗</el-divider>
-    <!--    搜索栏-->
-    <div style="width: 100%">
-      <el-input v-model="searchParam.id" placeholder="用户编号" clearable></el-input>
-      <el-button @click="getAllList" type="primary">查询</el-button>
-    </div>
+<!--    &lt;!&ndash;    搜索栏&ndash;&gt;-->
+<!--    <div style="width: 100%">-->
+<!--      <el-input v-model="searchParam.id" placeholder="用户编号" clearable></el-input>-->
+<!--      <el-button @click="getAllList" type="primary">查询</el-button>-->
+<!--    </div>-->
 
     <h4>你好，{{admin.username}}, id: {{admin.id}}</h4>
     <!--    表格-->
     <div style="float: left; padding-top: 20px; width: 98%">
       <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="小组id" prop="gid"></el-table-column>
-<!--        <el-table-column label="小组名字" prop="account"></el-table-column>-->
-<!--        <el-table-column label="任务" prop="username"></el-table-column>-->
+<!--        <el-table-column label="小组名字" prop="gname"></el-table-column>-->
+<!--        <el-table-column label="任务" prop="clocktype"></el-table-column>-->
         <el-table-column label="我的打卡状态" prop="uclockstate"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">

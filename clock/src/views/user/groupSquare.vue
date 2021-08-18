@@ -7,6 +7,7 @@
       <el-button type="text" @click="addToGroup">没有想加入的小组？点我创建</el-button>
     </div>
     <!--    表格-->
+    <h4>你好，{{admin.username}}, id: {{admin.id}}</h4>
     <div style="float:left;padding-top:20px;width:98%">
       <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="小组编号" prop="gid"></el-table-column>
@@ -15,7 +16,7 @@
         <el-table-column label="成员数量" prop="gnum"></el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
-            <el-button @click="toUpdate(scope.row)" type="primary" size="small">加入</el-button>
+            <el-button @click="toUpdate(scope.row.gid)" type="primary" size="small">加入</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -62,7 +63,7 @@
 
 <script>
 
-import {selectAllGroups, updateGroup} from "@/api/group";
+import {selectAllGroups, updateGroup, userJoinGroup, changeGnum} from "@/api/group";
 
 export default {
     name: "groupSquare",
@@ -81,6 +82,8 @@ export default {
         },
         total:0,
         tableData: [],
+
+        admin:{},
 
         addDialogFormVisible:false,
         formLabelWidth:'120px',
@@ -105,6 +108,7 @@ export default {
       }
     },
     created() {
+      this.getUserInfo()
       this.getAllList()
     },
     methods: {
@@ -113,6 +117,9 @@ export default {
       },
       delGroup() {
         console.log('删除')
+      },
+      getUserInfo() {
+        this.admin = JSON.parse(localStorage.getItem('suser'))
       },
       getAllList() {
         selectAllGroups (this.searchParam).then(res => {
@@ -132,35 +139,57 @@ export default {
         this.searchParam.pageNum = val
         this.getAllList()
       },
-      toUpdate(form) {
+      addToGroup(form) {
         this.addform = JSON.parse(JSON.stringify(form))
-        console.log(this.addform)
+        // console.log(this.addform)
         this.addDialogFormVisible = true
       },
-      updateToGroup(formName) {
-        this.$refs[formName].validate((valid) => {
-          console.log(this.addform)
-          if (valid) {
-            updateGroup(this.addform).then(res => {
-              let code = res.data.code
-              if(code == 200) {
-                this.getAllList()
-                this.$message({ showClose: true, message: '成功!', type: 'success'});
-                this.addDialogFormVisible = false
-              }else {
-                this.$message({ showClose: true, message: res.data.message, type: 'error'});
-              }
-            }).catch(() => {
-              console.log("==error===")
-            })
-          } else {
-            console.log('error submit!!');
-            return false;
+
+      // updateToGroup(formName) {
+      //   this.$refs[formName].validate((valid) => {
+      //     console.log(this.addform)
+      //     if (valid) {
+      //       updateGroup(this.addform).then(res => {
+      //         let code = res.data.code
+      //         if(code == 200) {
+      //           this.getAllList()
+      //           this.$message({ showClose: true, message: '成功!', type: 'success'});
+      //           this.addDialogFormVisible = false
+      //         }else {
+      //           this.$message({ showClose: true, message: res.data.message, type: 'error'});
+      //         }
+      //       }).catch(() => {
+      //         console.log("==error===")
+      //       })
+      //     } else {
+      //       console.log('error submit!!');
+      //       return false;
+      //     }
+      //   });
+      // },
+
+      toUpdate(gid) {
+        console.log(this.admin.id)
+        userJoinGroup(this.admin.id, gid).then(res => {
+          let code = res.data.code
+          if (code == 200) {
+            this.$message({showClose: true, message: '加入成功！', type: 'success'})
+          } else{
+            this.$message({showClose: true, message: '加入失败，请重试！', type: 'error'})
           }
-        });
-      },
-      addToGroup() {
-        console.log("点击了创建按钮")
+        }).catch((err) => {
+          console.log(err)
+        })
+        changeGnum(gid).then(res => {
+          let code = res.data.code
+          if (code == 200){
+            this.$message({showClose: true, message: '更新小组人数成功！', type: 'success'})
+          } else{
+            this.$message({showClose: true, message: '更新失败，请重试！', type: 'error'})
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
       },
     }
 }

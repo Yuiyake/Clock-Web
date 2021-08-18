@@ -18,10 +18,31 @@ export function selectMyGroups(uid) {
     })
 }
 
+export function userJoinGroup(uid, gid) {
+    return service({
+        method: 'post',
+        url: '/group/userJoinGroup',
+        params: {
+            uid: uid,
+            gid: gid,
+        }
+    })
+}
+
 export function updateGroup(data) {
     return service({
         method: 'post',
         url: '/group/updateGroup',
         data: data
+    })
+}
+
+export  function changeGnum(gid) {
+    return service({
+        method: 'post',
+        url: '/group/changeGnum',
+        params: {
+            gid: gid
+        }
     })
 }
