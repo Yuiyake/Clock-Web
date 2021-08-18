@@ -49,6 +49,9 @@
           <el-form-item label="成员数量" :label-width="formLabelWidth" prop="gNum">
             <el-input v-model="addform.gnum" autocomplete="off"></el-input>
           </el-form-item>
+          <el-form-item label="打卡数量" :label-width="formLabelWidth" prop="gNum">
+            <el-input v-model="addform.clocknum" autocomplete="off"></el-input>
+          </el-form-item>
           <el-form-item :label-width="formLabelWidth">
             <el-button @click="addDialogFormVisible = false">取消</el-button>
             <el-button @click="addData('addform')" type="primary">确认</el-button>

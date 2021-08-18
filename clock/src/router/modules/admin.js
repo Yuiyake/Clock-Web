@@ -25,6 +25,11 @@ const AdminRouter = {
             component: () => import('../../views/admin/typeInfo')
         },
         {
+            path: '/groupEcharts',
+            name: 'groupEcharts',
+            component: () => import('../../views/admin/groupEcharts')
+        },
+        {
             path: '/groupInfo',
             name: 'groupInfo',
             component: () => import('../../views/admin/groupInfo')

@@ -23,6 +23,10 @@
         <i class="el-icon-tickets"></i>
         <span slot="title">小组管理</span>
       </el-menu-item>
+      <el-menu-item index="/groupEcharts">
+        <i class="el-icon-tickets"></i>
+        <span slot="title">小组图表</span>
+      </el-menu-item>
       <el-menu-item index="/typeInfo">
         <i class="el-icon-tickets"></i>
         <span slot="title">打卡类型管理</span>

@@ -8,12 +8,17 @@
     </div>
     <!--    表格-->
     <h4>你好，{{admin.username}}, id: {{admin.id}}</h4>
+<!--    <span label="打卡率" >{{percentage}}</span>-->
     <div style="float:left;padding-top:20px;width:98%">
       <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="小组编号" prop="gid"></el-table-column>
         <el-table-column label="小组名称" prop="gname"></el-table-column>
         <el-table-column label="打卡类型" prop="clocktype"></el-table-column>
         <el-table-column label="成员数量" prop="gnum"></el-table-column>
+        <el-table-column label="打卡数量" prop="clocknum"></el-table-column>
+        <el-table-column label="今日打卡率">
+          <template slot-scope="scopes">{{percentage(scopes.row.clocknum, scopes.row.gnum)}}</template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
             <el-button @click="toUpdate(scope.row.gid)" type="primary" size="small">加入</el-button>
@@ -109,11 +114,21 @@ export default {
         // },
       }
     },
+
+    computed: {
+      // percentage(clocknum, gnum){
+      //   return this.tableData.clocknum/this.tableData.gnum
+      // }
+    },
+
     created() {
       this.getUserInfo()
       this.getAllList()
     },
     methods: {
+      percentage(clocknum, gnum){
+        return clocknum/gnum
+      },
       checkGroup() {
         console.log('编辑')
       },
