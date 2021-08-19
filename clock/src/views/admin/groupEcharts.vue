@@ -18,23 +18,16 @@ import {
 import {
   CanvasRenderer
 } from 'echarts/renderers';
-
 echarts.use(
     [ToolboxComponent, TooltipComponent, GridComponent, LegendComponent, BarChart, LineChart, CanvasRenderer]
 );
-// var dom = document.getElementById("container");
-// var myChart = echarts.init(dom);
-// var app = {};
-
-
-// if (option && typeof option === 'object') {
-//   myChart.setOption(option);
-// }
+import {getBarList} from "@/api/group";
 export default {
   name: "groupEcharts",
   data() {
       return{
-
+        listq: [],
+        checkX: [],
       }
   },
   created() {
@@ -44,7 +37,24 @@ export default {
   },
   methods: {
     drawLine(){
-      let myChart = this.$echarts.init(document.getElementById('myChart'))
+      let _this = this
+      getBarList().then(res => {
+      let myChart = _this.$echarts.init(document.getElementById('myChart'))
+        let clocknum1 = res.data.clocknum
+        let gnum1 = res.data.groupnum
+        //  计算折线率
+        for(var i in gnum1){
+          var listarr = clocknum1[i]/gnum1[i]*100
+          this.listq.push(listarr)
+        }
+        console.log(this.listq)
+
+        //  计算横坐标长度
+        for(var i in gnum1){
+          var listarr1 = i
+          this.checkX.push(listarr1)
+        }
+
       myChart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -64,12 +74,14 @@ export default {
           }
         },
         legend: {
-          data: ['蒸发量', '降水量', '平均温度']
+          data: ['小组人数', '今日打卡数', '平均打卡率']
         },
         xAxis: [
           {
             type: 'category',
-            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            // data: ['1','2','3','4','5','6','7'],
+            data: this.checkX,
             axisPointer: {
               type: 'shadow'
             }
@@ -78,44 +90,51 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '水量',
+            name: '小组人数',
             min: 0,
-            max: 250,
-            interval: 50,
-            axisLabel: {
-              formatter: '{value} ml'
-            }
+            max: 100,
+            interval: 20,
+            // axisLabel: {
+            //   formatter: '{value} ml'
+            // }
           },
           {
             type: 'value',
-            name: '温度',
+            name: '今日打卡数',
             min: 0,
-            max: 25,
-            interval: 5,
-            axisLabel: {
-              formatter: '{value} °C'
-            }
+            max: 100,
+            interval: 20,
+            // axisLabel: {
+            //   formatter: '{value} °C'
+            // }
           }
         ],
         series: [
           {
-            name: '蒸发量',
+            name: '小组人数',
             type: 'bar',
-            data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+            // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+            data: res.data.groupnum
           },
           {
-            name: '降水量',
+            name: '今日打卡数',
             type: 'bar',
-            data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+            // data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+            data: res.data.clocknum
           },
           {
-            name: '平均温度',
+            name: '平均打卡率',
             type: 'line',
             yAxisIndex: 1,
-            data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+            data: this.listq
           }
         ]
       })
+
+      })
+
+
+
     },
   },
 }

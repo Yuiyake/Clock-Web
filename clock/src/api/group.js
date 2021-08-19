@@ -75,3 +75,10 @@ export function userDeleteGnum(gid){
         }
     })
 }
+
+export function getBarList() {
+    return service({
+        method: 'get',
+        url: '/group/barvo'
+    })
+}
