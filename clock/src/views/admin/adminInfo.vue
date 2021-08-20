@@ -1,5 +1,16 @@
 <template>
   <div>
+    <div>
+      <el-upload
+      class="avatar-uploader"
+      action="https://jsonplaceholder.typicode.com/posts/"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </div>
     <table style="border-collapse:collapse">
       <tr>
         <td>用户id</td>
@@ -20,13 +31,18 @@
       <tr>
         <td></td>
         <td><el-button @click="toUpdate" type="text">修改密码 </el-button></td>
+        <td></td>
+        <td><el-button @click="toUpdateImg" type="text">修改头像 </el-button></td>
       </tr>
     </table>
 
-    <el-dialog title="信息" width="30%" :visible.sync="addDialogFormVisible">
+    <el-dialog title="修改信息" width="30%" :visible.sync="addDialogFormVisible">
       <el-form :model="addform" :rules="rules" ref="addform" >
         <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
           <el-input   show-password v-model="addform.password" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="头像":label-width="formLabelWidth" prop="uavg">
+          <el-input type="file" v-model="addform.uavg"></el-input>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="addDialogFormVisible = false">取消</el-button>
@@ -34,6 +50,25 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+
+<!--    <el-dialog title="修改头像" width="30%" :visible.sync="addDialogImgVisible">-->
+<!--      <el-form :model="imgform" :rules="rules" ref="imgform" >-->
+<!--        <el-upload-->
+<!--            class="avatar-uploader"-->
+<!--            action="http://localhost:1013/user/imgStr"-->
+<!--            :show-file-list="false"-->
+<!--            :on-success="handleAvatarSuccess"-->
+<!--            :before-upload="beforeAvatarUpload">-->
+<!--          <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+<!--          <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--        </el-upload>-->
+<!--        <el-form-item :label-width="formLabelWidth">-->
+<!--          <el-button @click="addDialogImgVisible = false">取消</el-button>-->
+<!--          <el-button @click="updateImg()" type="primary">确认</el-button>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--    </el-dialog>-->
+
 <!--    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">-->
 <!--      <h3 align="center">修改密码</h3>-->
 <!--      <el-form-item label="旧密码" prop="oldpassword">-->
@@ -55,7 +90,7 @@
 
 <script>
 
-import {selectAllUser, updateUser} from "@/api/user";
+import {selectAllUser, updateUser, setImg} from "@/api/user";
 
 export default {
   name: "adminInfo",
@@ -92,7 +127,10 @@ export default {
     return {
       admin: {},
       addform: {},
+      imgform:{},
+      imageUrl: '',
       addDialogFormVisible:false,
+      addDialogImgVisible: false,
       formLabelWidth:'120px',
       rules: {
         oldpass: [
@@ -130,6 +168,10 @@ export default {
       this.addform = JSON.parse(JSON.stringify(this.admin))
       this.addDialogFormVisible = true
     },
+    toUpdateImg() {
+      this.imgform = JSON.parse(JSON.stringify(this.admin))
+      this.addDialogImgVisible = true
+    },
     // 修改密码
     update(formName) {
       this.$refs[formName].validate((valid) => {
@@ -146,6 +188,11 @@ export default {
           }).catch(() => {
             console.log("===异常===")
           })
+
+          setImg(this.addform).then(res => {
+
+          })
+
         } else {
           console.log('error submit!!');
           return false;
@@ -154,7 +201,32 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    }
+    },
+
+    updateImg(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(this.imageUrl)
+    },
+
+    //  图片上传
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(this.imageUrl)
+    },
+    beforeAvatarUpload(file) {
+      // const isJPG = file.type === 'image/jpeg';
+      // const isLt2M = file.size / 1024 / 1024 < 2;
+      //
+      // if (!isJPG) {
+      //   this.$message.error('上传头像图片只能是 JPG 格式!');
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!');
+      // }
+      // return isJPG && isLt2M;
+      console.log("只是判断图片上传的规格和大小，这里先不做限制（后端有判断）")
+    },
+
   }
 }
 </script>
@@ -180,5 +252,28 @@ table {
 td:nth-child(2n+1){
   width:160px;
 
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

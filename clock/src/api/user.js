@@ -69,3 +69,13 @@ export function recoveryUser(data) {
         }
     })
 }
+
+export function setImg(data){
+    return service({
+        method: 'post',
+        url: '/user/imgStr',
+        params: {
+            data: data
+        }
+    })
+}
