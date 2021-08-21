@@ -24,6 +24,14 @@ export function selectAllUser(data) {
     })
 }
 
+export function selectUserById(id) {
+    return service({
+        method: 'post',
+        url: 'user/selectUserById',
+        id: id
+    })
+}
+
 export function selectForbidUser(data) {
     return service({
         method: 'post',

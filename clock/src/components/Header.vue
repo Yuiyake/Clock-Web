@@ -1,32 +1,52 @@
 <template>
     <div  class="header_div">
         <div class="right-menu">
-      <p>hello,{{admin.username}}。 编号：{{admin.id}}</p>
+      <p>hello,{{admin.username}}。</p>
             <el-tooltip class="item" effect="dark" content="退出登录" placement="top-start">
                 <el-button style="padding-top:2px" @click="logout" type="text">
-                  <el-avatar src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+                  <el-avatar :src="admin.uavg"></el-avatar>
                 </el-button>
             </el-tooltip>
         </div>
     </div>
 </template>
 <script>
+import {selectUserById} from "@/api/user";
+
 export default {
   data() {
     return {
-      admin: {},
+      admin: {
+        uavg: ''
+      },
     }
   },
   created() {
     this.getUserInfo()
+    // this.getUser()
   },
   methods: {
         logout() {
             this.$router.push({path:`/userLogin`})
         },
-      getUserInfo() {
-        this.admin = JSON.parse(localStorage.getItem('suser'))
-      },
+        getUserInfo() {
+          this.admin = JSON.parse(localStorage.getItem('suser'))
+          console.log(this.admin)
+          console.log(this.admin.uavg)
+        },
+        // getUser() {
+        //   selectUserById(this.admin.id).then(res => {
+        //     let code = res.data.code
+        //     if(code == 200) {
+        //       console.log(this.admin.uavg)
+        //       console.log("初始化成功")
+        //     }else {
+        //       this.$message({ showClose: true, message: res.data.message, type: 'error'});
+        //     }
+        //   }).catch((err) => {
+        //     console.log(err)
+        //   })
+        // },
     },
 }
 </script>
