@@ -1,15 +1,15 @@
 <template>
   <div>
     <div>
-      <el-upload
-      class="avatar-uploader"
-      action="https://jsonplaceholder.typicode.com/posts/"
-      :show-file-list="false"
-      :on-success="handleAvatarSuccess"
-      :before-upload="beforeAvatarUpload">
-      <img v-if="imageUrl" :src="imageUrl" class="avatar">
-      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
+<!--      <el-upload-->
+<!--      class="avatar-uploader"-->
+<!--      action="http://localhost:1013/user/imgStr"-->
+<!--      :show-file-list="false"-->
+<!--      :on-success="handleAvatarSuccess"-->
+<!--      :before-upload="beforeAvatarUpload">-->
+<!--      <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+<!--      <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
+<!--      </el-upload>-->
     </div>
     <table style="border-collapse:collapse">
       <tr>
@@ -29,6 +29,10 @@
         <td>{{admin.password}}</td>
       </tr>
       <tr>
+        <td>头像</td>
+        <td>{{admin.uavg}}</td>
+      </tr>
+      <tr>
         <td></td>
         <td><el-button @click="toUpdate" type="text">修改密码 </el-button></td>
         <td></td>
@@ -38,12 +42,24 @@
 
     <el-dialog title="修改信息" width="30%" :visible.sync="addDialogFormVisible">
       <el-form :model="addform" :rules="rules" ref="addform" >
+        <el-upload
+            class="avatar-uploader"
+            action="http://localhost:1013/user/imgStr"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
         <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
           <el-input   show-password v-model="addform.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="头像":label-width="formLabelWidth" prop="uavg">
-          <el-input type="file" v-model="addform.uavg"></el-input>
+        <el-form-item label="用户头像" :label-width="formLabelWidth" prop="uavg">
+          <el-input   v-model="addform.uavg" ></el-input>
         </el-form-item>
+<!--        <el-form-item label="头像":label-width="formLabelWidth" prop="uavg">-->
+<!--          <el-input type="file" v-model="addform.uavg"></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="addDialogFormVisible = false">取消</el-button>
           <el-button @click="update('addform')" type="primary">确认</el-button>
@@ -129,6 +145,7 @@ export default {
       addform: {},
       imgform:{},
       imageUrl: '',
+      uavg: '',
       addDialogFormVisible:false,
       addDialogImgVisible: false,
       formLabelWidth:'120px',
@@ -173,9 +190,10 @@ export default {
       this.addDialogImgVisible = true
     },
     // 修改密码
-    update(formName) {
+    update(formName,res,file) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log("上传按钮里："+this.addform.uavg)
           updateUser (this.addform).then(res => {
             let code = res.data.code
             if(code == 200) {
@@ -189,10 +207,6 @@ export default {
             console.log("===异常===")
           })
 
-          setImg(this.addform).then(res => {
-
-          })
-
         } else {
           console.log('error submit!!');
           return false;
@@ -203,15 +217,13 @@ export default {
       this.$refs[formName].resetFields();
     },
 
-    updateImg(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(this.imageUrl)
-    },
-
     //  图片上传
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(this.imageUrl)
+      this.addform.uavg = res
+      // console.log(res)
+      console.log("图片上传里："+this.addform.uavg)
+      // updateUser()
     },
     beforeAvatarUpload(file) {
       // const isJPG = file.type === 'image/jpeg';
