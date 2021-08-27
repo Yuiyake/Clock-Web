@@ -5,9 +5,14 @@
       <el-timeline-item :timestamp=dData.dtime placement="top" v-for="(dData, index) in dynamicData" :key="index">
         <el-card>
           <h4>更新 {{ dData.uid }} 打卡</h4>
+          <p>did: {{dData.did}}</p>
           <p>王傻逼 提交于 {{ dData.dtime }}</p>
           <p>{{dData.dconcern}}</p>
 <!--          <el-button type="text" @click="getRowDynamic">查看详情</el-button>-->
+          <el-button type="text" @click="showReply">回复</el-button>
+<!--          <div v-if="replyVisible">-->
+          <comment :comments="commentData"></comment>
+<!--          </div>-->
         </el-card>
       </el-timeline-item>
     </el-timeline>
@@ -67,47 +72,57 @@
 
 <script>
 import {selectAllDynamic, deleteDynamic, selectThisDynamic} from "@/api/dynamic";
+import {selectUserReply, addRootReply, addSonReply} from "@/api/reply";
 import dynamicInfo from "@/views/admin/dynamicInfo";
+import * as CommentData from '../../components/mockdata'
+import comment from "@/components/comment";
 export default {
   name: "timeLine",
   data() {
     return{
       dialogFormVisible: false,
+      replyVisible: false,
       timestamp: '',
       admin:{},
+      commentData: [],
       dynamicData: [
         {
-          title: '王淳宇读书',
-          tname: '学习',
-          desc: '王淳宇是傻逼',
-          img: '',
-          reply: 'sb',
-          zan: 10,
-          tid: '',
-          uid: '',
-          did: '',
-          dconcern: '',
-          support: '',
-          dtime: '',
-          dreplycount: '',
+          // title: '王淳宇读书',
+          // tname: '学习',
+          // desc: '王淳宇是傻逼',
+          // img: '',
+          // reply: 'sb',
+          // zan: 10,
+          // tid: '',
+          // uid: '',
+          // did: '',
+          // dconcern: '',
+          // support: '',
+          // dtime: '',
+          // dreplycount: '',
         }
       ]
     }
   },
+  components: {
+    comment
+  },
   created() {
     this.getUserInfo();
     this.getDynamic();
+    // this.commentData = CommentData.comment.data;
+    // this.getAllReply();
   },
   methods: {
     getDynamic(uid) {
       this.dynamicData.uid = this.admin.id
-      console.log(this.dynamicData.uid)
+      // console.log(this.dynamicData.uid)
       selectThisDynamic(this.dynamicData.uid).then(res => {
         let code = res.data.code
-        console.log(res.data.data)
+        // console.log(res.data.data)
         if (code == 200){
           this.dynamicData = res.data.data
-          console.log(this.dynamicData)
+          // console.log(this.dynamicData)
           // this.$message({showClose:true, message:'成功', type:'success'})
         } else {
           this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
@@ -122,6 +137,25 @@ export default {
     getUserInfo() {
       this.admin = JSON.parse(localStorage.getItem('suser'))
     },
+    showReply(){
+      this.replyVisible = true
+    },
+
+    getAllReply(did){
+      this.dynamicData.did = did
+      console.log(did)
+      selectUserReply(1).then(res => {
+        let code = res.data.code
+        if(code == 200){
+          this.commentData = res.data.data
+        } else {
+          this.$message({ showClose: true, message: '获取评论失败，请重试!', type: 'error'});
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+
   }
 }
 </script>

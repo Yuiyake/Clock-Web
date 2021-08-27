@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {selectMyGroups,userQuitGroup, userDeleteGnum} from "@/api/group";
+import {selectMyGroups,userQuitGroup, userDeleteGnum, userGroupClock} from "@/api/group";
 import {deleteUser} from "@/api/user";
 
 export default {
@@ -95,8 +95,20 @@ export default {
     //   this.getAllList()
     // },
 
-    clock(id) {
+    clock(gid) {
       console.log("点击打卡")
+      this.tableData.uid = this.admin.id
+      userGroupClock(gid, this.tableData.uid).then(res => {
+        let code = res.data.code
+        if(code == 200) {
+          this.getAllList()
+          this.$message({ showClose: true, message: '打卡成功!', type: 'success'});
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
 
     // 退出小组

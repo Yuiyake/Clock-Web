@@ -23,22 +23,22 @@
       </div>
 
       <div class="reply">
-        <div class="item" v-for="reply in item.reply">
+        <div class="item" v-for="replyVOS in item.replyVOS">
           <div class="reply-content">
-            <span class="from-name">{{reply.fromName}}</span><span>: </span>
-            <span class="to-name">@{{reply.toName}}</span>
-            <span>{{reply.content}}</span>
+            <span class="from-name">{{replyVOS.fromuid}}</span><span>: </span>
+            <span class="to-name">@{{replyVOS.touid}}</span>
+            <span>{{replyVOS.rContent}}</span>
           </div>
           <div class="reply-bottom">
-            <span>{{reply.date}}</span>
-            <span class="reply-text" @click="showCommentInput(item, reply)">
+            <span>{{replyVOS.date}}</span>
+            <span class="reply-text" @click="showCommentInput(item, replyVOS)">
               <i class="iconfont icon-comment"></i>
               <span>回复</span>
             </span>
           </div>
         </div>
 
-        <div class="write-reply" v-if="item.reply.length > 0" @click="showCommentInput(item)">
+        <div class="write-reply" v-if="item.replyVOS.length > 0" @click="showCommentInput(item)">
           <i class="el-icon-edit"></i>
           <span class="add-comment">添加新评论</span>
         </div>
@@ -63,11 +63,19 @@
 </template>
 
 <script>
+import {comment} from "@/components/mockdata";
+import {selectUserReply, addRootReply, addSonReply} from "@/api/reply";
+
 export default {
   props: {
     comments: {
       type: Array,
-      required: true
+      required: true,
+      default: () => {
+        return {
+          comments: {},
+        }
+      },
     }
   },
   components: {},
@@ -122,10 +130,25 @@ export default {
         this.inputComment = ''
       }
       this.showItemId = item.id
-    }
+    },
+
+    // getAllReply(did) {
+    //   did = 1
+    //   selectUserReply(did).then(res => {
+    //     let code =  res.data.code
+    //     if (code == 200){
+    //       this.comments = res.data.data
+    //       console.log(this.comments)
+    //       console.log(res.data.data)
+    //     }
+    //   })
+    // }
+
   },
   created() {
-    console.log(this.comments)
+    // console.log(this.comment)
+
+    // this.getAllReply(1)
   }
 }
 </script>

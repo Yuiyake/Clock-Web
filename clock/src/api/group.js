@@ -82,3 +82,14 @@ export function getBarList() {
         url: '/group/barvo'
     })
 }
+
+export function userGroupClock(gid, uid) {
+    return service({
+        method: 'post',
+        url: '/group/userGroupClock',
+        params: {
+            gid: gid,
+            uid: uid,
+        }
+    })
+}

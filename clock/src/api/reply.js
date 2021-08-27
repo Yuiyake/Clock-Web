@@ -4,14 +4,24 @@ export function selectUserReply(did) {
     return service({
         method: 'post',
         url: '/reply/selectUserReply',
-        did: did
+        params: {
+            did: did
+        }
     })
 }
 
-export function addReply(data) {
+export function addRootReply(data) {
     return service({
         method: 'post',
-        url: '/reply/addReply',
+        url: '/reply/addRootReply',
+        data: data
+    })
+}
+
+export function addSonReply(data) {
+    return service({
+        method: 'post',
+        url: '/reply/addSonReply',
         data: data
     })
 }

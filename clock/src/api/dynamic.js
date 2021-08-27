@@ -11,7 +11,7 @@ export function selectAllDynamic(data) {
 export function selectThisDynamic(uid) {
     return service({
         method: 'post',
-        url: '/dynamic/selectThisDynamic',
+        url: '/dynamic/selectUserDynamic',
         params: {
             uid: uid
         }
