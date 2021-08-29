@@ -79,6 +79,9 @@ export default {
     },
     // 获取id查询信息
     getFUserById(){
+      if (this.searchParam.id===null){
+        this.getAllList()
+      }
       selectFUser (this.searchParam).then(res => {
         let code = res.data.code
         if(code == 200) {

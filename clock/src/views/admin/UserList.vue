@@ -1,11 +1,11 @@
 <template>
   <div>
     <div style="width:100%;">
-      <el-input v-model="searchParam.username" placeholder="用户名" clearable />
-      <el-input v-model="searchParam.usercode" placeholder="学号" clearable />
-      <el-input v-model="searchParam.realname" placeholder="姓名" clearable />
+      <el-input v-model="searchParam.id" placeholder="用户id" clearable />
+      <el-input v-model="searchParam.account" placeholder="学号" clearable />
+      <el-input v-model="searchParam.username" placeholder="姓名" clearable />
 <!--      <el-cascader clearable v-model="searchParam.class" placeholder="专业班级" @change="handleChange" :props="defaultProps" :options="classes"  :show-all-levels="false"></el-cascader>-->
-      <el-button @click="getAllList" type="primary">查询</el-button>
+      <el-button @click="getAUserList" type="primary">查询</el-button>
 <!--      <el-button @click="toAdd" >新增</el-button>-->
     </div>
 
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import {selectAllUser,deleteUser,userRegister,updateUser,forbidUser} from '@/api/user'
+import {selectAllUser, deleteUser, userRegister, updateUser, forbidUser, selectAUser} from '@/api/user'
 // import {selectMajorClass} from '../../api/classes'
 
 
@@ -109,7 +109,9 @@ export default {
         pageSize:10,
         pageNum:1,
         role:'1',
-        // state: '0'
+        account: null,
+        id: null,
+        username: null
       },
       total:0,
       tableData: [],
@@ -203,6 +205,7 @@ export default {
 
     // 获取所有信息
     getAllList(){
+      console.log(this.searchParam)
       selectAllUser (this.searchParam).then(res => {
         let code = res.data.code
         if(code == 200) {
@@ -229,6 +232,25 @@ export default {
       this.addform.majorclass.push(this.addform.majorId)
       this.addform.majorclass.push(this.addform.classesId)
       this.addDialogFormVisible = true
+    },
+
+    // 获取相应信息
+    getAUserList(){
+      console.log(this.searchParam)
+      if (this.searchParam.id===null && this.searchParam.username===null && this.searchParam.account===null ){
+        this.getAllList()
+      }
+      selectAUser (this.searchParam).then(res => {
+        let code = res.data.code
+        if(code == 200) {
+          this.tableData = res.data.data.list
+          this.total = res.data.data.total
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
 
     // 添加学生

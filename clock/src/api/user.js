@@ -34,6 +34,16 @@ export function selectFUser(data) {
     })
 }
 
+export function selectAUser(data) {
+    return service({
+        method: 'post',
+        url: '/user/selectAUser',
+        // params: {
+        data: data,
+        // }
+    })
+}
+
 export function selectUserById(id) {
     return service({
         method: 'post',
