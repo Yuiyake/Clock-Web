@@ -3,8 +3,8 @@
     <!--    <p>用户回收页面</p>-->
     <!--    搜索栏-->
     <div style="width: 100%">
-      <el-input v-model="searchParam.id" placeholder="用户编号" clearable></el-input>
-      <el-button @click="getAllList" type="primary">查询</el-button>
+      <el-input v-model="searchParam.id" placeholder="用户id" clearable></el-input>
+      <el-button @click="getFUserById" type="primary">查询</el-button>
     </div>
     <!--    表格-->
     <div style="float: left; padding-top: 20px; width: 98%">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {deleteUser, recoveryUser, selectAllUser, selectForbidUser} from "@/api/user";
+import {deleteUser, recoveryUser, selectAllUser, selectForbidUser, selectFUser} from "@/api/user";
 
 export default {
   name: "userRecycle",
@@ -50,7 +50,7 @@ export default {
         pageSize:10,
         pageNum:1,
         role:'1',
-        // state: '0'
+        id: '',
       },
       total:0,
     }
@@ -76,6 +76,20 @@ export default {
     handleCurrentChange(val) {
       this.searchParam.pageNum = val
       this.getAllList()
+    },
+    // 获取id查询信息
+    getFUserById(){
+      selectFUser (this.searchParam).then(res => {
+        let code = res.data.code
+        if(code == 200) {
+          this.tableData = res.data.data.list
+          this.total = res.data.data.total
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     // 用户复原
     recovery(id) {

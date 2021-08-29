@@ -24,6 +24,16 @@ export function selectAllUser(data) {
     })
 }
 
+export function selectFUser(data) {
+    return service({
+        method: 'post',
+        url: '/user/selectFUserById',
+        // params: {
+            data: data,
+        // }
+    })
+}
+
 export function selectUserById(id) {
     return service({
         method: 'post',
