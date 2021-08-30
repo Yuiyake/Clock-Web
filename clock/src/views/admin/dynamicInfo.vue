@@ -2,15 +2,15 @@
   <div>
     <p>动态管理</p>
 <!--    <el-button type="warning" icon="el-icon-thumb" size="small" circle></el-button>-->
-    <el-badge :value="12" class="item">
-      <el-button icon="el-icon-thumb" type="warning" size="small">点赞</el-button>
-    </el-badge>
-    <el-badge :value="1" class="item" type="primary">
-      <el-button icon="el-icon-chat-dot-square" type="primary" size="small">评论</el-button>
-    </el-badge>
+<!--    <el-badge :value="12" class="item">-->
+<!--      <el-button icon="el-icon-thumb" type="warning" size="small">点赞</el-button>-->
+<!--    </el-badge>-->
+<!--    <el-badge :value="1" class="item" type="primary">-->
+<!--      <el-button icon="el-icon-chat-dot-square" type="primary" size="small">评论</el-button>-->
+<!--    </el-badge>-->
     <!--    搜索栏-->
     <div style="width: 100%">
-      <el-input v-model="searchList.did" placeholder="类型编号" clearable></el-input>
+      <el-input v-model="searchList.username" placeholder="用户名" clearable></el-input>
       <el-button @click="getDynamic" type="primary">查询</el-button>
 <!--      <el-button @click="dialogFormVisible = true" type="primary">新增</el-button>-->
     </div>
@@ -49,7 +49,8 @@
         </el-table-column>
         <el-table-column label="did" prop="did" width="100"></el-table-column>
 <!--        <el-table-column label="打卡类型" prop="tid" width="100"></el-table-column>-->
-        <el-table-column label="用户" prop="uid" width="100"></el-table-column>
+        <el-table-column label="用户编号" prop="uid" width="100"></el-table-column>
+        <el-table-column label="用户名" prop="username" width="100"></el-table-column>
         <el-table-column label="发布时间" prop="dtime"></el-table-column>
 <!--        <el-table-column label="点赞数" prop="support" width="100"></el-table-column>-->
 <!--        <el-table-column label="回复数" prop="dreplycount" width="100"></el-table-column>-->
