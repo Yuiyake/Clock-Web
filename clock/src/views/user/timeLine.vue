@@ -87,15 +87,8 @@ export default {
       commentData: [],
       dynamicData: [
         {
-          // title: '王淳宇读书',
-          // tname: '学习',
-          // desc: '王淳宇是傻逼',
-          // img: '',
-          // reply: 'sb',
-          // zan: 10,
-          // tid: '',
           // uid: '',
-          // did: '',
+          did: '',
           // dconcern: '',
           // support: '',
           // dtime: '',
@@ -110,11 +103,12 @@ export default {
   created() {
     this.getUserInfo();
     this.getDynamic();
-    // this.commentData = CommentData.comment.data;
-    // this.getAllReply();
+    this.commentData = CommentData.comment.data;
+    this.getAllReply();
   },
   methods: {
     getDynamic(uid) {
+
       this.dynamicData.uid = this.admin.id
       // console.log(this.dynamicData.uid)
       selectThisDynamic(this.dynamicData.uid).then(res => {
@@ -141,20 +135,35 @@ export default {
       this.replyVisible = true
     },
 
-    getAllReply(did){
-      this.dynamicData.did = did
+    // getAllReply(did){
+    //   this.dynamicData.did = did
+    //   console.log(did)
+    //   selectUserReply(did).then(res => {
+    //     let code = res.data.code
+    //     if(code == 200){
+    //       this.commentData = res.data.data
+    //     } else {
+    //       this.$message({ showClose: true, message: '获取评论失败，请重试!', type: 'error'});
+    //     }
+    //   }).catch((err) => {
+    //     console.log(err)
+    //   })
+    // },
+
+    getAllReply() {
+      // did = 1
+      console.log(dynamicInfo)
+      const did = this.dynamicData.did
       console.log(did)
-      selectUserReply(1).then(res => {
-        let code = res.data.code
-        if(code == 200){
-          this.commentData = res.data.data
-        } else {
-          this.$message({ showClose: true, message: '获取评论失败，请重试!', type: 'error'});
+      selectUserReply(did).then(res => {
+        let code =  res.data.code
+        if (code == 200){
+          this.commentData = res.data.data.data
+          console.log(this.commentData)
+          console.log(res.data.data)
         }
-      }).catch((err) => {
-        console.log(err)
       })
-    },
+    }
 
   }
 }

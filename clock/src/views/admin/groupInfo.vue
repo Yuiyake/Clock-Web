@@ -2,8 +2,8 @@
   <div>
     <!--    搜索栏-->
     <div style="width: 100%">
-      <el-input v-model="searchList.gid" placeholder="小组编号" clearable></el-input>
-      <el-button @click="getAllList" type="primary">查询</el-button>
+      <el-input v-model="searchParam.gname" placeholder="小组名" clearable></el-input>
+      <el-button @click="getGroupByName" type="primary">查询</el-button>
     </div>
     <!--    表格-->
     <div style="float:left;padding-top:20px;width:98%">
@@ -63,14 +63,14 @@
 </template>
 
 <script>
-import {selectAllGroups, updateGroup} from "@/api/group";
+import {selectAllGroups, updateGroup, selectByGroupName} from "@/api/group";
 
 export default {
   name: "groupInfo",
   data() {
     return{
       searchList: {
-        gid: ''
+        gname: ''
       },
       colcktype: [
         {id: '1', name: '早起'},
@@ -78,7 +78,8 @@ export default {
       searchParam: {
         pageSize:10,
         pageNum:1,
-        isPage:'1'
+        isPage:'1',
+        gname: ''
       },
       total:0,
       tableData: [],
@@ -137,6 +138,25 @@ export default {
       this.addform = JSON.parse(JSON.stringify(form))
       this.addDialogFormVisible = true
     },
+
+    getGroupByName() {
+      if (this.searchParam.gname === null || this.searchParam.gname === '') {
+        this.getAllList();
+      }
+      selectByGroupName (this.searchParam).then(res => {
+        let code = res.data.code
+        if(code == 200) {
+          this.tableData = res.data.data.list
+          console.log(this.tableData)
+          this.total = res.data.data.total
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+
     addData(formName) {
       this.$refs[formName].validate((valid) => {
             console.log(this.addform)

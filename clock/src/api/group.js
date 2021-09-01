@@ -8,6 +8,14 @@ export function selectAllGroups(data) {
     })
 }
 
+export function selectByGroupName(data) {
+    return service({
+        method: 'post',
+        url: '/group/selectByGroupName',
+        data: data
+    })
+}
+
 export function userAddGroup(data){
     return service({
         method: 'post',

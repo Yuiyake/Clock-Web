@@ -35,7 +35,7 @@
       </el-table>
     </div>
     <div style="padding-top:20px;width:80%;float:left">
-      <el-pagination :page-size="10" background layout="prev, pager, next"
+      <el-pagination :page-size="searchParam.pageSize" background layout="prev, pager, next"
                      @current-change="handleCurrentChange"
                      :current-page.sync="searchParam.pageNum"
                      :total="total">
@@ -106,8 +106,9 @@ export default {
 
       // classes:[],
       searchParam: {
-        pageSize:10,
+        pageSize:5,
         pageNum:1,
+        isPage:'1',
         role:'1',
         account: null,
         id: null,

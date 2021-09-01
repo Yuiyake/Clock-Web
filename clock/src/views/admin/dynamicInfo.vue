@@ -10,8 +10,8 @@
 <!--    </el-badge>-->
     <!--    搜索栏-->
     <div style="width: 100%">
-      <el-input v-model="searchList.username" placeholder="用户名" clearable></el-input>
-      <el-button @click="getDynamic" type="primary">查询</el-button>
+      <el-input v-model="searchParam.username" placeholder="用户名" clearable></el-input>
+      <el-button @click="getDynamicByName" type="primary">查询</el-button>
 <!--      <el-button @click="dialogFormVisible = true" type="primary">新增</el-button>-->
     </div>
     <!--    表格-->
@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import {selectAllDynamic, deleteDynamic} from "@/api/dynamic";
+import {selectAllDynamic, deleteDynamic, selectDynamicByName} from "@/api/dynamic";
 import {deleteType} from "@/api/type";
 
 export default {
@@ -109,7 +109,8 @@ export default {
       searchParam: {
         pageSize:10,
         pageNum:1,
-        isPage:'1'
+        isPage:'1',
+        username: ''
       },
       total:0,
       tableData: [],
@@ -141,6 +142,23 @@ export default {
       // this.addDialogFormVisible = true
       this.dialogTableVisible = true
     },
+
+    getDynamicByName() {
+      selectDynamicByName(this.searchParam).then(res => {
+        console.log(this.searchParam)
+        let code = res.data.code
+        if(code == 200) {
+          this.tableData = res.data.data.list
+          console.log(this.tableData)
+          this.total = res.data.data.total
+        }else {
+          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
     delDynamic(did) {
       this.$confirm('确定要删除该类型吗?', '提示', {
         confirmButtonText: '确定',

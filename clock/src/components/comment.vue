@@ -1,14 +1,14 @@
 <template>
   <div class="container">
-    <div class="comment" v-for="item in comments">
+    <div class="comment" v-for="(item, i) in comments" :key="i">
       <div class="info">
         <img class="avatar" :src="item.fromAvatar" width="36" height="36"/>
         <div class="right">
-          <div class="name">{{item.fromName}}</div>
-          <div class="date">{{item.date}}</div>
+          <div class="name">{{item.fromuname}}</div>
+          <div class="date">{{item.rTime}}</div>
         </div>
       </div>
-      <div class="content">{{item.content}}</div>
+      <div class="content">{{item.rContents}}</div>
 
 <!--      点赞和回复的按钮-->
       <div class="control">
@@ -23,14 +23,16 @@
       </div>
 
       <div class="reply">
-        <div class="item" v-for="replyVOS in item.replyVOS">
+        <div class="item" v-for="(replyVOS, j) in item.replyVOS" :key="j">
           <div class="reply-content">
-            <span class="from-name">{{replyVOS.fromuid}}</span><span>: </span>
-            <span class="to-name">@{{replyVOS.touid}}</span>
-            <span>{{replyVOS.rContent}}</span>
+<!--            <span class="from-name">{{replyVOS.fromuid}}</span><span>: </span>-->
+            <span class="from-name">{{replyVOS.fromuname}}</span><span>: </span>
+<!--            <span class="to-name">@{{replyVOS.touid}}</span>-->
+            <span class="to-name">@{{replyVOS.touname}}</span>
+            <span>{{replyVOS.rContents}}</span>
           </div>
           <div class="reply-bottom">
-            <span>{{replyVOS.date}}</span>
+            <span>{{replyVOS.rTime}}</span>
             <span class="reply-text" @click="showCommentInput(item, replyVOS)">
               <i class="iconfont icon-comment"></i>
               <span>回复</span>
@@ -38,12 +40,14 @@
           </div>
         </div>
 
-        <div class="write-reply" v-if="item.replyVOS.length > 0" @click="showCommentInput(item)">
+        <div class="write-reply" v-if="replyVOS.length > 0" @click="showCommentInput(item)">
+<!--        <div class="write-reply" @click="showCommentInput(item)">-->
           <i class="el-icon-edit"></i>
           <span class="add-comment">添加新评论</span>
         </div>
         <transition name="fade">
-          <div class="input-wrapper" v-if="showItemId === item.id">
+          <div class="input-wrapper" v-if="showItemId === item.touid">
+<!--          <div class="input-wrapper" v-if="showInput">-->
             <el-input class="gray-bg-input"
                       v-model="inputComment"
                       type="textarea"
@@ -82,7 +86,9 @@ export default {
   data() {
     return {
       inputComment: '',
-      showItemId: ''
+      showItemId: '',
+      replyVOS:[],
+      showInput: false,
     }
   },
   computed: {},
@@ -123,13 +129,14 @@ export default {
      * item: 当前大评论
      * reply: 当前回复的评论
      */
-    showCommentInput(item, reply) {
-      if (reply) {
-        this.inputComment = "@" + reply.fromName + " "
+    showCommentInput(item, replyVOS) {
+      if (replyVOS) {
+        this.inputComment = "@" + replyVOS.fromuname + " "
+        // this.showInput = true;
       } else {
         this.inputComment = ''
       }
-      this.showItemId = item.id
+      this.showItemId = item.touid
     },
 
     // getAllReply(did) {
