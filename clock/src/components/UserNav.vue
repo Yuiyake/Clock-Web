@@ -16,7 +16,7 @@
         </el-menu-item>
         <el-menu-item index="/timeLine">
           <i class="el-icon-tickets"></i>
-          <span slot="title">我的打卡</span>
+          <span slot="title">时间轴</span>
         </el-menu-item>
         <el-menu-item index="/myGroup">
           <i class="el-icon-tickets"></i>

@@ -14,6 +14,7 @@
         <el-table-column label="小组id" prop="gid"></el-table-column>
 <!--        <el-table-column label="小组名字" prop="gname"></el-table-column>-->
 <!--        <el-table-column label="任务" prop="clocktype"></el-table-column>-->
+        <el-table-column label="小组名字" prop="gname"></el-table-column>
         <el-table-column label="我的打卡状态" prop="uclockstate"></el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
