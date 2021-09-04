@@ -43,3 +43,13 @@ export function deleteDynamic(did) {
         }
     })
 }
+
+export function addUserDynamic(data) {
+    return service({
+        method: 'post',
+        url: '/dynamic/addUserDynamic',
+        // params: {
+            data: data
+        // }
+    })
+}
