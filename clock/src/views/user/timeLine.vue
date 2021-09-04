@@ -155,7 +155,7 @@ export default {
       console.log(dynamicInfo)
       const did = this.dynamicData.did
       console.log(did)
-      selectUserReply(did).then(res => {
+      selectUserReply(1).then(res => {
         let code =  res.data.code
         if (code == 200){
           this.commentData = res.data.data.data

@@ -14,12 +14,16 @@
           <i class="el-icon-tickets"></i>
           <span slot="title">个人资料</span>
         </el-menu-item>
+        <el-menu-item index="/writeBlog">
+          <i class="el-icon-s-flag"></i>
+          <span slot="title">我的打卡</span>
+        </el-menu-item>
         <el-menu-item index="/timeLine">
-          <i class="el-icon-tickets"></i>
+          <i class="el-icon-date"></i>
           <span slot="title">时间轴</span>
         </el-menu-item>
         <el-menu-item index="/myGroup">
-          <i class="el-icon-tickets"></i>
+          <i class="el-icon-user"></i>
           <span slot="title">我的小组</span>
         </el-menu-item>
       </el-submenu>

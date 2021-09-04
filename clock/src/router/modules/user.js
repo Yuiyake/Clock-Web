@@ -25,6 +25,11 @@ const UserRouter = {
             component: () => import('../../views/user/timeLine'),
         },
         {
+            path: '/writeBlog',
+            name: 'writeBlog',
+            component: () => import('../../views/user/writeBlog'),
+        },
+        {
             path: '/userComment',
             name: 'userComment',
             component: () => import('../../views/user/userComment'),
