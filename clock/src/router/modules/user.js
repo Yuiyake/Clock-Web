@@ -34,6 +34,11 @@ const UserRouter = {
             name: 'userComment',
             component: () => import('../../views/user/userComment'),
         },
+        {
+            path: '/myScore',
+            name: 'userCommyScorement',
+            component: () => import('../../views/user/myScore'),
+        },
 
     ]
 }

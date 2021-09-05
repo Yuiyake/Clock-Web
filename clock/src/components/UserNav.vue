@@ -18,6 +18,10 @@
           <i class="el-icon-s-flag"></i>
           <span slot="title">我的打卡</span>
         </el-menu-item>
+        <el-menu-item index="/myScore">
+          <i class="el-icon-s-order"></i>
+          <span slot="title">我的积分</span>
+        </el-menu-item>
         <el-menu-item index="/timeLine">
           <i class="el-icon-date"></i>
           <span slot="title">时间轴</span>
