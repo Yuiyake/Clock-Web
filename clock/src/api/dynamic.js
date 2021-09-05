@@ -44,12 +44,13 @@ export function deleteDynamic(did) {
     })
 }
 
-export function addUserDynamic(data) {
+export function addUserDynamic(data,id) {
     return service({
         method: 'post',
         url: '/dynamic/addUserDynamic',
         // params: {
-            data: data
+            data: data,
+            id:id,
         // }
     })
 }

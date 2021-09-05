@@ -43,6 +43,7 @@
 
 <script>
 import {addUserDynamic} from "@/api/dynamic"
+import {changeIsClock} from "@/api/user"
 import dynamicInfo from "@/views/admin/dynamicInfo";
 export default {
   name: "writeBlog",
@@ -85,6 +86,16 @@ export default {
         if (code == 200) {
           this.$message({ showClose: true, message: '成功!', type: 'success'});
         }else {
+          this.$message({ showClose: true, message: res.data.message, type: 'error'});
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+      changeIsClock(this.admin.id).then(res => {
+        let code = res.data.code
+        if (code == 200) {
+          console.log("更新今日打卡状态成功")
+        } else {
           this.$message({ showClose: true, message: res.data.message, type: 'error'});
         }
       }).catch((err) => {

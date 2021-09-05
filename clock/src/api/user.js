@@ -107,3 +107,11 @@ export function setImg(data){
         }
     })
 }
+
+export function changeIsClock(id) {
+    return service({
+        method: 'post',
+        url: '/user/changeIsClock',
+        id: id
+    })
+}
