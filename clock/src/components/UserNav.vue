@@ -4,10 +4,6 @@
              class="el-menu-vertical-demo" @open="handleOpen"
              @close="handleClose" background-color="rgb(48, 65, 86)"
              text-color="#fff" active-text-color="#ffd04b">
-      <el-menu-item index="/groupSquare">
-        <i class="el-icon-tickets"></i>
-        <span slot="title">小组广场</span>
-      </el-menu-item>
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-s-platform"></i>我的</template>
         <el-menu-item index="/userMsg">
@@ -31,6 +27,10 @@
           <span slot="title">我的小组</span>
         </el-menu-item>
       </el-submenu>
+      <el-menu-item index="/groupSquare">
+        <i class="el-icon-tickets"></i>
+        <span slot="title">小组广场</span>
+      </el-menu-item>
       <el-menu-item index="/userComment">
         <i class="el-icon-tickets"></i>
         <span slot="title">评论组件</span>

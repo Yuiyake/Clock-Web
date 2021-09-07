@@ -3,8 +3,8 @@
     <el-menu :router="true" default-active="/userList"
              class="el-menu-vertical-demo" @open="handleOpen"
              @close="handleClose" background-color="rgb(48, 65, 86)"
-             text-color="#fff" active-text-color="#ffd04b">
-      <el-submenu index="2">
+             text-color="#fff" active-text-color="#ffd04b" :default-openeds="openeds">
+      <el-submenu index="2" >
         <template slot="title"><i class="el-icon-s-platform"></i>用户管理</template>
         <el-menu-item index="/userList">
           <i class="el-icon-user-solid"></i>
@@ -70,6 +70,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      openeds: ['2'],
+      uniqueOpened: false
+    }
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
