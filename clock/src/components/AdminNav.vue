@@ -19,14 +19,17 @@
           <span slot="title">用户回收</span>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item index="/groupInfo">
-        <i class="el-icon-tickets"></i>
-        <span slot="title">小组管理</span>
-      </el-menu-item>
-      <el-menu-item index="/groupEcharts">
-        <i class="el-icon-tickets"></i>
-        <span slot="title">小组图表</span>
-      </el-menu-item>
+      <el-submenu index="2">
+        <template slot="title"><i class="el-icon-s-platform"></i>小组</template>
+        <el-menu-item index="/groupInfo">
+          <i class="el-icon-tickets"></i>
+          <span slot="title">小组管理</span>
+        </el-menu-item>
+        <el-menu-item index="/groupEcharts">
+          <i class="el-icon-tickets"></i>
+          <span slot="title">小组图表</span>
+        </el-menu-item>
+        </el-submenu>
       <el-menu-item index="/typeInfo">
         <i class="el-icon-tickets"></i>
         <span slot="title">打卡类型管理</span>

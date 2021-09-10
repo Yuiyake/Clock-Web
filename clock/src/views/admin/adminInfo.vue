@@ -1,16 +1,5 @@
 <template>
   <div>
-    <div>
-<!--      <el-upload-->
-<!--      class="avatar-uploader"-->
-<!--      action="http://localhost:1013/user/imgStr"-->
-<!--      :show-file-list="false"-->
-<!--      :on-success="handleAvatarSuccess"-->
-<!--      :before-upload="beforeAvatarUpload">-->
-<!--      <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
-<!--      <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-<!--      </el-upload>-->
-    </div>
     <table style="border-collapse:collapse">
       <tr>
         <td>用户id</td>
@@ -33,13 +22,14 @@
         <td>{{admin.uavg}}</td>
       </tr>
       <tr>
-        <td></td>
-        <td><el-button @click="toUpdate" type="text">修改密码 </el-button></td>
-        <td></td>
-        <td><el-button @click="toUpdateImg" type="text">修改头像 </el-button></td>
+<!--        <td></td>-->
+        <td><el-button @click="toUpdate" type="primary">修改信息 </el-button></td>
+<!--        <td></td>-->
+<!--        <td><el-button @click="toUpdateImg" type="text">修改头像 </el-button></td>-->
       </tr>
     </table>
 
+<!--    修改弹窗表单-->
     <el-dialog title="修改信息" width="30%" :visible.sync="addDialogFormVisible">
       <el-form :model="addform" :rules="rules" ref="addform" >
         <el-upload
@@ -51,15 +41,15 @@
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
+        <el-form-item label="名字" :label-width="formLabelWidth" prop="username">
+          <el-input  v-model="addform.username" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
           <el-input   show-password v-model="addform.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="用户头像" :label-width="formLabelWidth" prop="uavg">
           <el-input   v-model="addform.uavg" ></el-input>
         </el-form-item>
-<!--        <el-form-item label="头像":label-width="formLabelWidth" prop="uavg">-->
-<!--          <el-input type="file" v-model="addform.uavg"></el-input>-->
-<!--        </el-form-item>-->
         <el-form-item :label-width="formLabelWidth">
           <el-button @click="addDialogFormVisible = false">取消</el-button>
           <el-button @click="update('addform')" type="primary">确认</el-button>
@@ -189,7 +179,7 @@ export default {
       this.imgform = JSON.parse(JSON.stringify(this.admin))
       this.addDialogImgVisible = true
     },
-    // 修改密码
+    // 修改信息
     update(formName,res,file) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -203,10 +193,7 @@ export default {
             }else {
               this.$message({ showClose: true, message: res.data.message, type: 'error'});
             }
-          }).catch(() => {
-            console.log("===异常===")
           })
-
         } else {
           console.log('error submit!!');
           return false;
