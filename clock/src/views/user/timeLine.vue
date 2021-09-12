@@ -9,64 +9,33 @@
           <p>王傻逼 提交于 {{ dData.dtime }}</p>
           <p>{{dData.dconcern}}</p>
 <!--          <el-button type="text" @click="getRowDynamic">查看详情</el-button>-->
-          <el-button type="text" @click="showReply">回复</el-button>
-<!--          <div v-if="replyVisible">-->
-          <comment :comments="commentData"></comment>
-<!--          </div>-->
+          <el-button v-if="!dData.showFlag" type="text" @click="isShow(dData,index)">查看</el-button>
+          <template v-else>
+            <el-button type="text" @click="showReply(dData)">回复</el-button>
+            <transition name="fade" v-if="replyVisible">
+              <div class="input-wrapper">
+                <!--          <div class="input-wrapper" v-if="showInput">-->
+                <el-input class="gray-bg-input"
+                          v-model="fatherForm.rContents"
+                          type="textarea"
+                          :rows="3"
+                          autofocus
+                          placeholder="写下你的评论">
+                </el-input>
+                <div class="btn-control">
+                  <span class="cancel" @click="replyVisible=false">取消</span>
+                  <el-button class="btn" type="success" round @click="commitComment">确定</el-button>
+                </div>
+              </div>
+            </transition>
+            <!--          <div v-if="replyVisible">-->
+            <comment :comments="commentData"></comment>
+            <!--          </div>-->
+          </template>
+
         </el-card>
       </el-timeline-item>
     </el-timeline>
-
-<!--    &lt;!&ndash;    动态详情弹窗&ndash;&gt;-->
-<!--    <div>-->
-<!--      <el-dialog title="动态详情" :visible.sync="dialogFormVisible">-->
-<!--        <template>-->
-<!--          <el-table-->
-<!--              :data="dynamicData"-->
-<!--              style="width: 100%">-->
-<!--            <el-table-column type="expand">-->
-<!--              <template slot-scope="props">-->
-<!--                <el-form label-position="left" inline class="demo-table-expand">-->
-<!--                  <el-form-item label="动态编号">-->
-<!--                    <span>{{ props.row.did }}</span>-->
-<!--                  </el-form-item>-->
-<!--                  <el-form-item label="打卡类型">-->
-<!--                    <span>{{ props.row.tid }}</span>-->
-<!--                  </el-form-item>-->
-<!--                  <el-form-item label="用户">-->
-<!--                    <span>{{ props.row.uid }}</span>-->
-<!--                  </el-form-item>-->
-<!--                  <el-form-item label="时间">-->
-<!--                    <span>{{ props.row.dtime }}</span>-->
-<!--                  </el-form-item>-->
-<!--                  <el-form-item label="点赞">-->
-<!--                    <span>{{ props.row.support }}</span>-->
-<!--                  </el-form-item>-->
-<!--                  <el-form-item label="回复">-->
-<!--                    <span>{{ props.row.dreplycount }}</span>-->
-<!--                  </el-form-item>-->
-<!--                  <el-form-item label="内容">-->
-<!--                    <span>{{ props.row.dconcern }}</span>-->
-<!--                  </el-form-item>-->
-<!--                </el-form>-->
-<!--              </template>-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--                label="标题"-->
-<!--                prop="title">-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--                label="打卡类型"-->
-<!--                prop="tname">-->
-<!--            </el-table-column>-->
-<!--            <el-table-column-->
-<!--                label="描述"-->
-<!--                prop="desc">-->
-<!--            </el-table-column>-->
-<!--          </el-table>-->
-<!--        </template>-->
-<!--      </el-dialog>-->
-<!--    </div>-->
   </div>
 </template>
 
@@ -91,6 +60,12 @@ export default {
       didList:[],
       // test:[],
       CommentData:{},
+      showFlag:false, // 是否查看评论
+      fatherForm:{
+        did:2,
+        rContents:''
+      }
+
     }
   },
   components: {
@@ -104,15 +79,17 @@ export default {
     // this.getAllReply();
   },
   methods: {
-    getDynamic(uid) {
-
+    getDynamic() {
       this.dynamicData.uid = this.admin.id
       // console.log(this.dynamicData.uid)
       selectThisDynamic(this.dynamicData.uid).then(res => {
         let code = res.data.code
         // console.log(res.data.data)
         if (code == 200) {
-          this.dynamicData = res.data.data
+          this.dynamicData = res.data.data.map(item=>{
+            item.showFlag = false;
+            return item;
+          })
           // console.log(this.dynamicData)
           for (let i = 0; i < this.dynamicData.length; i++) {
             this.didList.push(this.dynamicData[i].did)
@@ -122,13 +99,7 @@ export default {
         } else {
           this.$message({showClose: true, message: '查询失败，请重试!', type: 'error'});
         }
-        // 原因是getDynamic里发起网络请求是个异步的操作,你在created里按顺序调用了this.getDynamic和this.getAllReply
-        // 你用了同步的思维看待问题了,你以为在调用this.getAllReply的时候,已经执行了上面的selectThisDynamic(this.dynamicData.uid).then()内的代码
-        // but...网络请求是异步的
-        // 明白了就好
-        // Promise这样又then又catch的也比较繁琐
-        // 实际上你在created非要按同步的思维写也不是不行，不过那要用async await，我估计你不会，所以就最简单的了，
-        // 在then(()=>{})里给this.didList赋值完了之后，再调用this.getAllReply()
+
         this.getAllReply()
       })
     },
@@ -138,17 +109,29 @@ export default {
     getUserInfo() {
       this.admin = JSON.parse(localStorage.getItem('suser'))
     },
-    showReply() {
+    isShow(dData,index) {
+      this.fatherForm.did = dData.did;
+      this.getAllReply()
+      this.dynamicData.forEach((item,idx)=>{
+        item.showFlag = false;
+        if(idx===index){
+          item.showFlag = true;
+        }
+      })
+    },
+    showReply(dData) {
+      // this.fatherForm.did = dData.did;
+      console.log('dData',dData)
       this.replyVisible = true
     },
 
     getAllReply() {
       let d = 0
-      for (let j = 0; j < this.didList.length; j++) {
+      // for (let j = 0; j < this.didList.length; j++) {
         // d = this.didList[j]
         // console.log("d:" + d)
         // debugger
-        selectUserReply(this.didList[j]).then(res => {
+        selectUserReply(this.fatherForm.did).then(res => {
           let code = res.data.code
           if (code == 200) {
             this.commentData = res.data.data.data
@@ -160,14 +143,35 @@ export default {
             // console.log(this.commentData[0].did)
           }
         })
-      }
+      // }
     },
+    commitComment(){
+    //  父评论
+
+      addRootReply({
+        rid:32,
+        fid:1,
+        fromuid:2,
+        fromuname:'uio',
+        touid:2,
+        touname:'sdszvc',
+        ...this.fatherForm
+      }).then(res => {
+        this.replyVisible = false
+
+        // let code = res.data.code
+        // if (code == 200) {
+        //   this.commentData = res.data.data.data
+        //   console.log(this.commentData)
+        // }
+      })
+    }
 
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 img{
   width: 300px;
   height: 200px;
@@ -183,5 +187,21 @@ img{
   margin-right: 0;
   margin-bottom: 0;
   width: 50%;
+}
+
+.btn-control {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 10px;
+.cancel {
+  font-size: 16px;
+  color:  #606266;
+  margin-right: 20px;
+  cursor: pointer;
+  &:hover {
+     color: #333;
+   }
+  }
 }
 </style>

@@ -16,7 +16,7 @@
 <!--          <i class="iconfont icon-like"></i>-->
 <!--          <span class="like-num">{{item.likeNum > 0 ? item.likeNum + '人赞' : '赞'}}</span>-->
 <!--        </span>-->
-        <span class="comment-reply" @click="showCommentInput(item)">
+        <span class="comment-reply" @click="showCommentInput(item,i)">
           <i class="iconfont icon-comment"></i>
           <span>回复</span>
         </span>
@@ -33,7 +33,7 @@
           </div>
           <div class="reply-bottom">
             <span>{{replyVOS.rTime}}</span>
-            <span class="reply-text" @click="showCommentInput(item, replyVOS)">
+            <span class="reply-text" @click="showCommentInput(item,i, replyVOS)">
               <i class="iconfont icon-comment"></i>
               <span>回复</span>
             </span>
@@ -46,10 +46,10 @@
           <span class="add-comment">添加新评论</span>
         </div>
         <transition name="fade">
-          <div class="input-wrapper" v-if="showItemId === item.touid">
+          <div class="input-wrapper" v-if="showItemId === item.touid && showIndex===i">
 <!--          <div class="input-wrapper" v-if="showInput">-->
             <el-input class="gray-bg-input"
-                      v-model="inputComment"
+                      v-model="sonForm.rContents"
                       type="textarea"
                       :rows="3"
                       autofocus
@@ -89,6 +89,13 @@ export default {
       showItemId: '',
       replyVOS:[],
       showInput: false,
+      showIndex:-1,
+      sonForm:{
+        did:2,
+        fid:1,
+        touid:2,
+        rContents:''
+      }
     }
   },
   computed: {},
@@ -121,6 +128,20 @@ export default {
      * 提交评论
      */
     commitComment() {
+      addSonReply({
+        rid:32,
+        fromuid:2,
+        fromuname:'uio',
+        touname:'sdszvc',
+        ...this.sonForm
+      }).then(res => {
+        this.cancel();
+        // let code = res.data.code
+        // if (code == 200) {
+        //   this.commentData = res.data.data.data
+        //   console.log(this.commentData)
+        // }
+      })
       console.log(this.inputComment);
     },
 
@@ -129,14 +150,13 @@ export default {
      * item: 当前大评论
      * reply: 当前回复的评论
      */
-    showCommentInput(item, replyVOS) {
-      if (replyVOS) {
-        this.inputComment = "@" + replyVOS.fromuname + " "
-        // this.showInput = true;
-      } else {
-        this.inputComment = ''
-      }
-      this.showItemId = item.touid
+    showCommentInput(item, index,replyVOS) {
+      console.log(item, index,replyVOS)
+      this.sonForm.rContents = ''
+      this.showIndex = index;
+      this.sonForm.fid = replyVOS?replyVOS.rid:item.rid;
+      this.sonForm.touid = replyVOS?replyVOS.fromuid:item.fromuid;
+      this.showItemId = item.touid;
     },
 
     // getAllReply(did) {
