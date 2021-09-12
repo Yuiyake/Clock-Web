@@ -147,9 +147,8 @@ export default {
     },
     commitComment(){
     //  父评论
-
       addRootReply({
-        rid:32,
+        rid:6,
         fid:1,
         fromuid:2,
         fromuname:'uio',
@@ -158,12 +157,13 @@ export default {
         ...this.fatherForm
       }).then(res => {
         this.replyVisible = false
-
-        // let code = res.data.code
-        // if (code == 200) {
-        //   this.commentData = res.data.data.data
-        //   console.log(this.commentData)
-        // }
+        let code = res.data.code
+        if (code == 200) {
+          this.$message({ showClose: true, message: '发布成功！', type: 'success'});
+          this.selectUserReply(this.fatherForm.did)
+          // this.commentData = res.data.data.data
+          // console.log(this.commentData)
+        }
       })
     }
 

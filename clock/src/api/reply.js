@@ -14,7 +14,8 @@ export function addRootReply(data) {
     return service({
         method: 'post',
         url: '/reply/addRootReply',
-        params: data
+        // params: data
+        data: data
     })
 }
 
@@ -22,7 +23,8 @@ export function addSonReply(data) {
     return service({
         method: 'post',
         url: '/reply/addSonReply',
-        params: data
+        // params: data
+        data: data
     })
 }
 

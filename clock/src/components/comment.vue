@@ -128,8 +128,9 @@ export default {
      * 提交评论
      */
     commitComment() {
+      // 子评论
       addSonReply({
-        rid:32,
+        rid:7,
         fromuid:2,
         fromuname:'uio',
         touname:'sdszvc',
@@ -148,13 +149,13 @@ export default {
     /**
      * 点击评论按钮显示输入框
      * item: 当前大评论
-     * reply: 当前回复的评论
+     * replyVOS: 当前回复的评论
      */
     showCommentInput(item, index,replyVOS) {
       console.log(item, index,replyVOS)
       this.sonForm.rContents = ''
       this.showIndex = index;
-      this.sonForm.fid = replyVOS?replyVOS.rid:item.rid;
+      this.sonForm.fid = replyVOS?replyVOS.fid:item.rid;
       this.sonForm.touid = replyVOS?replyVOS.fromuid:item.fromuid;
       this.showItemId = item.touid;
     },
