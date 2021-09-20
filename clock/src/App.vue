@@ -68,7 +68,10 @@ export default {
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   width: 100%;
-  height: 740px;
+  height: 760px;
+  margin: 0;
+}
+body {
   margin: 0;
 }
 </style>
