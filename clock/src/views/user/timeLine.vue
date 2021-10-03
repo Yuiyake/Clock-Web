@@ -7,6 +7,7 @@
           <h4>更新 {{ dData.uid }} 打卡</h4>
           <p>did: {{dData.did}}</p>
           <p>王傻逼 提交于 {{ dData.dtime }}</p>
+          <img :src="dData.dimg" v-if="dData.dimg == ''? '':dData.dimg" style="width: 300px; height: 300px"/>
           <p>{{dData.dconcern}}</p>
 <!--          <el-button type="text" @click="getRowDynamic">查看详情</el-button>-->
           <el-button v-if="!dData.showFlag" type="text" @click="isShow(dData,index)">查看</el-button>

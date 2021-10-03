@@ -31,10 +31,10 @@
         <i class="el-icon-tickets"></i>
         <span slot="title">小组广场</span>
       </el-menu-item>
-      <el-menu-item index="/userComment">
-        <i class="el-icon-tickets"></i>
-        <span slot="title">评论组件</span>
-      </el-menu-item>
+<!--      <el-menu-item index="/userComment">-->
+<!--        <i class="el-icon-tickets"></i>-->
+<!--        <span slot="title">评论组件</span>-->
+<!--      </el-menu-item>-->
     </el-menu>
   </div>
 </template>

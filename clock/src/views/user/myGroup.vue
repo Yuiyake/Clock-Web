@@ -15,10 +15,15 @@
 <!--        <el-table-column label="小组名字" prop="gname"></el-table-column>-->
 <!--        <el-table-column label="任务" prop="clocktype"></el-table-column>-->
         <el-table-column label="小组名字" prop="gname"></el-table-column>
-        <el-table-column label="我的打卡状态" prop="uclockstate"></el-table-column>
+        <el-table-column label="我的打卡状态" >
+          <template slot-scope="scope">
+            <span v-if="scope.row.uclockstate == '1'">已打卡</span>
+            <span v-if="scope.row.uclockstate == '0'">未打卡</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button @click="clock(scope.row.gid)" size="small"  type="primary">打卡</el-button>
+            <el-button @click="clock(scope.row.gid, scope.row.uclockstate)" size="small"  type="primary">打卡</el-button>
             <el-button @click="delData(scope.row.gid)" size="small" type="danger">退出</el-button>
           </template>
         </el-table-column>
@@ -96,20 +101,22 @@ export default {
     //   this.getAllList()
     // },
 
-    clock(gid) {
-      console.log("点击打卡")
-      this.tableData.uid = this.admin.id
-      userGroupClock(gid, this.tableData.uid).then(res => {
-        let code = res.data.code
-        if(code == 200) {
-          this.getAllList()
-          this.$message({ showClose: true, message: '打卡成功!', type: 'success'});
-        }else {
-          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
+    clock(gid,uclockstate) {
+      // console.log("点击打卡")
+      if(uclockstate === '1'){
+        this.$message({ showClose: true, message: '今天已过卡，请勿重复打卡！', type: 'error'});
+      }else {
+        this.tableData.uid = this.admin.id
+        userGroupClock(gid, this.tableData.uid).then(res => {
+          let code = res.data.code
+          if(code == 200) {
+            this.getAllList()
+            this.$message({ showClose: true, message: '打卡成功!', type: 'success'});
+          }else {
+            this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+          }
+        })
+      }
     },
 
     // 退出小组

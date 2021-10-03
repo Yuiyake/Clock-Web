@@ -8,7 +8,7 @@
           <el-card style="height: 500px">
             <p style="font-size: large">已经坚持打卡<span style="font-size: 60px; color: #42b983">{{scoreInfo[0].clockday}}</span>天啦</p>
             <p style="font-size: large">当前的积分是：{{scoreInfo[0].score}}</p>
-            <p style="font-size: large">今天打卡状态：{{scoreInfo[0].isclock}}</p>
+            <p style="font-size: large">今天打卡状态：{{scoreInfo[0].isclock == '1'? '已打卡':'未打卡'}}</p>
           </el-card>
         </div>
       </el-col>
