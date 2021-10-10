@@ -68,7 +68,7 @@
 
     <!--    分页-->
     <div style="padding-top:20px;width:80%;float:left">
-      <el-pagination :page-size="10" background layout="prev, pager, next"
+      <el-pagination :page-size="searchParam.pageSize" background layout="prev, pager, next"
                      @current-change="handleCurrentChange"
                      :current-page.sync="searchParam.pageNum"
                      :total="total">
@@ -84,7 +84,7 @@
           <el-table-column prop="tid" label="打卡类型" width="100"></el-table-column>
           <el-table-column prop="uid" label="用户"></el-table-column>
           <el-table-column prop="dtime" label="发布时间"></el-table-column>
-          <el-table-column prop="support" label="点赞数"></el-table-column>
+<!--          <el-table-column prop="support" label="点赞数"></el-table-column>-->
           <el-table-column prop="dreplycount" label="回复数"></el-table-column>
           <el-table-column prop="dconcern" label="内容"></el-table-column>
         </el-table>
@@ -107,7 +107,7 @@ export default {
         did: ''
       },
       searchParam: {
-        pageSize:10,
+        pageSize:7,
         pageNum:1,
         isPage:'1',
         username: ''
@@ -144,13 +144,14 @@ export default {
     },
 
     getDynamicByName() {
-      selectDynamicByName(this.searchParam).then(res => {
+      selectDynamicByName(this.searchParam.username).then(res => {
         console.log(this.searchParam)
         let code = res.data.code
         if(code == 200) {
-          this.tableData = res.data.data.list
-          console.log(this.tableData)
-          this.total = res.data.data.total
+          this.tableData = res.data.data
+          let len = Object.keys(res.data.data).length
+          console.log("len:" + len)
+          this.total =len
         }else {
           this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
         }
@@ -186,7 +187,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.searchParam.pageNum = val
-      this.getType()
+      this.getDynamic()
     },
   },
 }

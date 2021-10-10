@@ -106,7 +106,7 @@ export default {
 
       // classes:[],
       searchParam: {
-        pageSize:5,
+        pageSize:7,
         pageNum:1,
         isPage:'1',
         role:'1',

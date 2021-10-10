@@ -96,7 +96,7 @@ export default {
     },
     // 用户复原
     recovery(id) {
-      this.$confirm('确定要禁用该用户吗?', '提示', {
+      this.$confirm('确定要恢复该用户吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -105,18 +105,18 @@ export default {
           let code = res.data.code
           if(code == 200) {
             this.getAllList()
-            this.$message({ showClose: true, message: '禁用成功!', type: 'success'});
+            this.$message({ showClose: true, message: '恢复成功!', type: 'success'});
           }else {
-            this.$message({ showClose: true, message: '禁用失败，请重试!', type: 'error'});
+            this.$message({ showClose: true, message: '恢复失败，请重试!', type: 'error'});
           }
         }).catch(() => {
-          console.log("===管理员禁用异常===")
+          console.log("===管理员恢复异常===")
         })
       }).catch((err) => {
         console.log(err)
         this.$message({
           type: 'info',
-          message: '已取消禁用'
+          message: '已取消恢复'
         });
       });
     },

@@ -2,8 +2,8 @@
   <div>
     <!--    搜索栏-->
     <div style="width: 100%">
-      <el-input v-model="searchList.tid" placeholder="类型编号" clearable></el-input>
-      <el-button @click="getType" type="primary">查询</el-button>
+      <el-input v-model="searchParam.tid" placeholder="类型编号" clearable></el-input>
+      <el-button @click="selectTypeId" type="primary">查询</el-button>
       <el-button @click="changeAddType" type="primary">新增</el-button>
     </div>
     <!--    表格-->
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import {selectAllType, updateType, deleteType, addType} from '@/api/type'
+import {selectAllType, updateType, deleteType, addType, selectTypeById} from '@/api/type'
 import {selectAllGroups} from "@/api/group";
 import {deleteUser, userRegister} from "@/api/user";
 export default {
@@ -93,7 +93,8 @@ export default {
       searchParam: {
         pageSize:10,
         pageNum:1,
-        isPage:'1'
+        isPage:'1',
+        tid: null
       },
       total:0,
       tableData: [],
@@ -128,6 +129,17 @@ export default {
         console.log("===error===")
       })
     },
+
+    selectTypeId() {
+      if(this.searchParam.tid === null || this.searchParam.tid === '') {
+        this.getType()
+      } else {
+        selectTypeById(this.searchParam.tid).then(res => {
+          this.tableData = res.data.data
+        })
+      }
+    },
+
     changeType(form) {
       this.addform = JSON.parse(JSON.stringify(form))
       this.dialogFormVisible = true;

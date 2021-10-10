@@ -8,6 +8,16 @@ export function selectAllType(data) {
     })
 }
 
+export function selectTypeById(tid) {
+    return service({
+        method: 'post',
+        url: '/type/selectTypeById',
+        params: {
+            tid: tid
+        }
+    })
+}
+
 export function addType(data) {
     return service({
         method: 'post',

@@ -8,11 +8,13 @@ export function selectAllDynamic(data) {
     })
 }
 
-export function selectDynamicByName(data) {
+export function selectDynamicByName(username) {
     return service({
         method: 'post',
         url: '/dynamic/selectDynamicByName',
-        data: data
+        params:{
+            username: username
+        }
     })
 }
 
