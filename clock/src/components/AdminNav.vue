@@ -38,10 +38,10 @@
         <i class="el-icon-tickets"></i>
         <span slot="title">动态管理</span>
       </el-menu-item>
-      <el-menu-item index="/announcement">
-        <i class="el-icon-tickets"></i>
-        <span slot="title">公告发布</span>
-      </el-menu-item>
+<!--      <el-menu-item index="/announcement">-->
+<!--        <i class="el-icon-tickets"></i>-->
+<!--        <span slot="title">公告发布</span>-->
+<!--      </el-menu-item>-->
       <el-menu-item index="/adminInfo">
         <i class="el-icon-tickets"></i>
         <span slot="title">个人资料</span>

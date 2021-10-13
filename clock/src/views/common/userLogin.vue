@@ -74,13 +74,20 @@ export default {
     register(){
       this.$router.push({path:`/userRegister`})
     },
+    empty() {
+      this.searchData.account = ''
+      this.searchData.password = ''
+    },
     login(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-            console.log(1)
           userLogin (this.searchData).then(res => {
-            console.log(2)
+            if(res.data.code == 200){
               this.$message({ showClose: true, message: '登陆成功!', type: 'success'});
+            } else {
+              this.$message({ showClose: true, message: '该用户不存在或者密码错误！', type: 'error'});
+              this.empty()
+            }
             // 存储本地信息，key为suser
               localStorage.setItem('suser', JSON.stringify(res.data.data));
               if(res.data.data.role == '0') {
