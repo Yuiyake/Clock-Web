@@ -12,8 +12,6 @@
     <div style="float: left; padding-top: 20px; width: 98%">
       <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="小组id" prop="gid"></el-table-column>
-<!--        <el-table-column label="小组名字" prop="gname"></el-table-column>-->
-<!--        <el-table-column label="任务" prop="clocktype"></el-table-column>-->
         <el-table-column label="小组名字" prop="gname"></el-table-column>
         <el-table-column label="我的打卡状态" >
           <template slot-scope="scope">

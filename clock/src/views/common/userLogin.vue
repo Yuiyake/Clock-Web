@@ -12,16 +12,7 @@
           <el-form-item    prop="password">
             <el-input v-model="searchData.password" placeholder="密码"  clearable show-password />
           </el-form-item>
-          <!--                <el-form-item  label="验证码"  prop="verificationCode">-->
-          <!--                    <el-input v-model="searchData.verificationCode" placeholder="验证码"  clearable />-->
-          <!--                </el-form-item>-->
-          <!--                 <el-form-item  label="验证码">-->
-          <!--                    <div @click="refreshCode" >-->
-          <!--                        <Check :identifyCode = "identifyCode"></Check>-->
-          <!--                    </div>-->
-          <!--                </el-form-item>-->
           <el-form-item >
-            <!-- <el-button  @click="register" >注册</el-button> -->
             <el-button @click="login('searchData')" type="primary" >登录</el-button>
           </el-form-item>
         </div>
@@ -34,13 +25,6 @@
 // import Check from '../common/Check'
 import {userLogin} from '@/api/user'
 export default {
-  // components:{Check},
-  mounted () {
-    // 初始化验证码
-    this.identifyCode = ''
-    this.makeCode(this.identifyCodes, 4)
-    console.log(this.identifyCode)
-  },
   data() {
     return {
       searchData: {
@@ -51,29 +35,9 @@ export default {
         account: [{ required: true, trigger: 'blur', message: '请输入学生号'}],
         password: [{ required: true, trigger: 'blur', message: '请输入密码' }],
       },
-
-      identifyCodes:'1234567890qwertyuioplkjhgfdsazxcvbnm',
-      identifyCode:'',
     }
   },
   methods: {
-    // 刷新验证码
-    refreshCode () {
-      this.identifyCode = ''
-      this.makeCode(this.identifyCodes,4);
-      console.log(this.identifyCode)
-    },
-    makeCode (o,l) {
-      for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)]
-      }
-    },
-    randomNum (min, max) {
-      return Math.floor(Math.random() * (max - min) + min)
-    },
-    register(){
-      this.$router.push({path:`/userRegister`})
-    },
     empty() {
       this.searchData.account = ''
       this.searchData.password = ''
@@ -141,13 +105,16 @@ body {
   width: 100%;
   height: 100%;
   margin:0px;
-  background: url(login.jpg) no-repeat;
+  background: url(login.jpg) no-repeat ;
   background-size: cover;
   background-attachment:fixed;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color:#000000;
+  filter: Alpha(Opacity=60);
 }
+
 
 .login_div1 {
   position: relative;

@@ -15,6 +15,11 @@ const UserRouter = {
             component: () => import('../../views/user/groupSquare'),
         },
         {
+            path: '/dynamicSquare',
+            name: 'dynamicSquare',
+            component: () => import('../../views/user/dynamicSquare'),
+        },
+        {
             path: '/userMsg',
             name: 'userMsg',
             component: () => import('../../views/user/userMsg'),

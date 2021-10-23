@@ -4,9 +4,9 @@
     <el-timeline>
       <el-timeline-item :timestamp=dData.dtime placement="top" v-for="(dData, index) in dynamicData" :key="index">
         <el-card>
-          <h4>更新 {{ dData.uid }} 打卡</h4>
-          <p>did: {{dData.did}}</p>
-          <p>王傻逼 提交于 {{ dData.dtime }}</p>
+          <h4>更新 {{ dData.tid }} 打卡</h4>
+<!--          <p>did: {{dData.did}}</p>-->
+          <p>{{dData.username}} 提交于 {{ dData.dtime }}</p>
           <img :src="dData.dimg" v-if="dData.dimg == ''? '':dData.dimg" style="width: 300px; height: 300px"/>
           <p>{{dData.dconcern}}</p>
 <!--          <el-button type="text" @click="getRowDynamic">查看详情</el-button>-->
@@ -15,7 +15,6 @@
             <el-button type="text" @click="showReply(dData)">回复</el-button>
             <transition name="fade" v-if="replyVisible">
               <div class="input-wrapper">
-                <!--          <div class="input-wrapper" v-if="showInput">-->
                 <el-input class="gray-bg-input"
                           v-model="fatherForm.rContents"
                           type="textarea"
@@ -25,13 +24,11 @@
                 </el-input>
                 <div class="btn-control">
                   <span class="cancel" @click="replyVisible=false">取消</span>
-                  <el-button class="btn" type="success" round @click="commitComment">确定</el-button>
+                  <el-button class="btn" type="success" round @click="commitComment()">确定</el-button>
                 </div>
               </div>
             </transition>
-            <!--          <div v-if="replyVisible">-->
-            <comment :comments="commentData"></comment>
-            <!--          </div>-->
+            <comment :comments="commentData" :fatherForm="fatherForm"></comment>
           </template>
 
         </el-card>
@@ -59,11 +56,11 @@ export default {
         {}
       ],
       didList:[],
-      // test:[],
       CommentData:{},
       showFlag:false, // 是否查看评论
       fatherForm:{
-        did:2,
+        // 这里的1只是给一个值让他可以get到，不然会报错，至于这个did真正的值，会在isShow()方法的时候被修改。
+        did:1,
         rContents:''
       }
 
@@ -127,7 +124,7 @@ export default {
     },
 
     getAllReply() {
-      let d = 0
+      // let d = 0
       // for (let j = 0; j < this.didList.length; j++) {
         // d = this.didList[j]
         // console.log("d:" + d)
@@ -146,15 +143,15 @@ export default {
         })
       // }
     },
-    commitComment(){
+    commitComment(did){
     //  父评论
+      let replyFid = this.admin.id
+      console.log(this.dynamicData.did)
       addRootReply({
-        rid:6,
-        fid:1,
-        fromuid:2,
-        fromuname:'uio',
-        touid:2,
-        touname:'sdszvc',
+        rid:null,
+        fid:null,
+        fromuid:replyFid,
+        touid:replyFid,
         ...this.fatherForm
       }).then(res => {
         this.replyVisible = false

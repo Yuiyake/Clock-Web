@@ -15,7 +15,7 @@ function generateService(config) {
     useInterceptors(service)
     return service
 }
-
+// post请求头设置application/x-www-form-urlencoded;charset=UTF-8
 function useInterceptors(service) {
     service.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
     // service.interceptors.request.use(
@@ -25,6 +25,7 @@ function useInterceptors(service) {
     //     },
     //     (err) => Promise.reject(err),
     // )
+
     // http response 拦截器
     service.interceptors.response.use(
         (response) => response,

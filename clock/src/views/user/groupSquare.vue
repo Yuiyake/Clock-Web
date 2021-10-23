@@ -76,7 +76,7 @@
 
 <script>
 
-import {selectAllGroups, updateGroup, userJoinGroup, changeGnum, userAddGroup} from "@/api/group";
+import {selectAllGroups, updateGroup, userJoinGroup, changeGnum, userAddGroup, selectMyGroups} from "@/api/group";
 
 export default {
     name: "groupSquare",
@@ -97,6 +97,7 @@ export default {
         },
         total:0,
         tableData: [],
+        isrepect:'0',
 
         admin:{},
 
@@ -136,12 +137,6 @@ export default {
     methods: {
       percentage(clocknum, gnum){
         return clocknum/gnum
-      },
-      checkGroup() {
-        console.log('编辑')
-      },
-      delGroup() {
-        console.log('删除')
       },
       getUserInfo() {
         this.admin = JSON.parse(localStorage.getItem('suser'))
@@ -195,27 +190,38 @@ export default {
 
       toUpdate(gid) {
         console.log(this.admin.id)
-        userJoinGroup(this.admin.id, gid).then(res => {
-          let code = res.data.code
-          if (code == 200) {
-            this.getAllList();
-            this.$message({showClose: true, message: '加入成功！', type: 'success'})
-          } else{
-            this.$message({showClose: true, message: '加入失败，请重试！', type: 'error'})
+        selectMyGroups(this.admin.id).then(res => {
+          if(res.data.code == 200) {
+            console.log(res.data.data)
+            for(let i=0; i<res.data.data.length; i++) {
+              if (res.data.data[i].gid == gid) {
+                this.$message({showClose: true, message: '你已经加入该小组，不能重复加入', type: 'error'})
+                this.isrepect = 1;
+                break;
+              }
+            }if(this.isrepect==0){
+                // console.log(1);
+                userJoinGroup(this.admin.id, gid).then(res => {
+                  if (res.data.code == 200) {
+                    this.getAllList();
+                    this.$message({showClose: true, message: '加入成功！', type: 'success'})
+                  } else{
+                    this.$message({showClose: true, message: '加入失败，请重试！', type: 'error'})
+                  }
+                })
+                changeGnum(gid).then(res => {
+                  if (res.data.code == 200){
+                    this.$message({showClose: true, message: '更新小组人数成功！', type: 'success'})
+                  } else{
+                    this.$message({showClose: true, message: '更新失败，请重试！', type: 'error'})
+                  }
+                })
+              }
+            // }
+
           }
-        }).catch((err) => {
-          console.log(err)
         })
-        changeGnum(gid).then(res => {
-          let code = res.data.code
-          if (code == 200){
-            this.$message({showClose: true, message: '更新小组人数成功！', type: 'success'})
-          } else{
-            this.$message({showClose: true, message: '更新失败，请重试！', type: 'error'})
-          }
-        }).catch((err) => {
-          console.log(err)
-        })
+        this.isrepect = 0
       },
     }
 }

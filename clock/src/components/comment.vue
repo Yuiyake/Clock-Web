@@ -2,7 +2,7 @@
   <div class="container">
     <div class="comment" v-for="(item, i) in comments" :key="i">
       <div class="info">
-        <img class="avatar" :src="item.fromAvatar" width="36" height="36"/>
+        <img class="avatar" :src="item.uavg" width="36" height="36"/>
         <div class="right">
           <div class="name">{{item.fromuname}}</div>
           <div class="date">{{item.rTime}}</div>
@@ -68,7 +68,7 @@
 
 <script>
 import {comment} from "@/components/mockdata";
-import {selectUserReply, addRootReply, addSonReply} from "@/api/reply";
+import {addSonReply} from "@/api/reply";
 
 export default {
   props: {
@@ -80,6 +80,10 @@ export default {
           comments: {},
         }
       },
+    },
+    fatherForm:{
+      type: Object,
+      required: true
     }
   },
   components: {},
@@ -93,47 +97,46 @@ export default {
       sonForm:{
         did:2,
         fid:1,
-        touid:2,
+        touid:null,
         rContents:''
-      }
+      },
+      admin:{},
     }
   },
   computed: {},
   methods: {
-    /**
-     * 点赞
-     */
-    likeClick(item) {
-      if (item.isLike === null) {
-        Vue.$set(item, "isLike", true);
-        item.likeNum++
-      } else {
-        if (item.isLike) {
-          item.likeNum--
-        } else {
-          item.likeNum++
-        }
-        item.isLike = !item.isLike;
-      }
-    },
+     // 点赞
+    // likeClick(item) {
+    //   if (item.isLike === null) {
+    //     Vue.$set(item, "isLike", true);
+    //     item.likeNum++
+    //   } else {
+    //     if (item.isLike) {
+    //       item.likeNum--
+    //     } else {
+    //       item.likeNum++
+    //     }
+    //     item.isLike = !item.isLike;
+    //   }
+    // },
 
-    /**
-     * 点击取消按钮
-     */
+    // 点击取消按钮
     cancel() {
       this.showItemId = ''
     },
 
-    /**
-     * 提交评论
-     */
+    getUserInfo() {
+      this.admin = JSON.parse(localStorage.getItem('suser'))
+    },
+
+    // 提交评论
     commitComment() {
       // 子评论
       addSonReply({
-        rid:7,
-        fromuid:2,
-        fromuname:'uio',
-        touname:'sdszvc',
+        rid:null,
+        fromuid:this.admin.id,
+        // fromuname:'uio',
+        // touname:'sdszvc',
         ...this.sonForm
       }).then(res => {
         this.cancel();
@@ -160,22 +163,10 @@ export default {
       this.showItemId = item.touid;
     },
 
-    // getAllReply(did) {
-    //   did = 1
-    //   selectUserReply(did).then(res => {
-    //     let code =  res.data.code
-    //     if (code == 200){
-    //       this.comments = res.data.data
-    //       console.log(this.comments)
-    //       console.log(res.data.data)
-    //     }
-    //   })
-    // }
-
   },
   created() {
     // console.log(this.comment)
-
+    this.getUserInfo()
     // this.getAllReply(1)
   }
 }
