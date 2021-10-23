@@ -25,7 +25,7 @@
         <el-table-column label="成员数量" prop="gnum"></el-table-column>
         <el-table-column label="打卡数量" prop="clocknum"></el-table-column>
         <el-table-column label="今日打卡率">
-          <template slot-scope="scopes">{{percentage(scopes.row.clocknum, scopes.row.gnum)}}</template>
+          <template slot-scope="scopes">{{percentage(scopes.row.clocknum, scopes.row.gnum)}}%</template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
@@ -136,7 +136,7 @@ export default {
     },
     methods: {
       percentage(clocknum, gnum){
-        return clocknum/gnum
+        return clocknum/gnum*100
       },
       getUserInfo() {
         this.admin = JSON.parse(localStorage.getItem('suser'))

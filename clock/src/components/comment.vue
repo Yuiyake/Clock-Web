@@ -141,10 +141,10 @@ export default {
       }).then(res => {
         this.cancel();
         // let code = res.data.code
-        // if (code == 200) {
-        //   this.commentData = res.data.data.data
-        //   console.log(this.commentData)
-        // }
+        if (res.data.code == 200) {
+          // this.commentData = res.data.data.data
+          this.$message({ showClose: true, message: '发布成功！', type: 'success'});
+        }
       })
       console.log(this.inputComment);
     },

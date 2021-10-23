@@ -6,7 +6,7 @@
       <el-col :span="8">
         <div class="grid-content bg-purple">
           <el-card style="height: 500px">
-            <p style="font-size: large">已经坚持打卡<span style="font-size: 60px; color: #42b983">{{scoreInfo[0].clockday}}</span>天啦</p>
+            <p style="font-size: large">已经坚持打卡<span style="font-size: 60px; color: #42b983">{{scoreInfo[0].isclock == '1'? scoreInfo[0].clockday+1:scoreInfo[0].clockday}}</span>天啦</p>
             <p style="font-size: large">当前的积分是：{{scoreInfo[0].score}}</p>
             <p style="font-size: large">今天打卡状态：{{scoreInfo[0].isclock == '1'? '已打卡':'未打卡'}}</p>
           </el-card>
@@ -43,7 +43,11 @@ export default {
     return{
       clockday: '6',
       score:'700',
-      scoreInfo: {},
+      scoreInfo: [{
+        isclock: '',
+        score:'',
+        clockday: ''
+      }],
       admin:{},
     }
   },
