@@ -19,13 +19,11 @@
       </tr>
       <tr>
         <td>头像</td>
-        <td>{{admin.uavg}}</td>
+<!--        <td>{{admin.uavg}}</td>-->
+        <td><img :src="admin.uavg" width="300px" height="300px"></td>
       </tr>
       <tr>
-<!--        <td></td>-->
         <td><el-button @click="toUpdate" type="primary">修改信息 </el-button></td>
-<!--        <td></td>-->
-<!--        <td><el-button @click="toUpdateImg" type="text">修改头像 </el-button></td>-->
       </tr>
     </table>
 
@@ -56,41 +54,6 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-
-<!--    <el-dialog title="修改头像" width="30%" :visible.sync="addDialogImgVisible">-->
-<!--      <el-form :model="imgform" :rules="rules" ref="imgform" >-->
-<!--        <el-upload-->
-<!--            class="avatar-uploader"-->
-<!--            action="http://localhost:1013/user/imgStr"-->
-<!--            :show-file-list="false"-->
-<!--            :on-success="handleAvatarSuccess"-->
-<!--            :before-upload="beforeAvatarUpload">-->
-<!--          <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
-<!--          <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-<!--        </el-upload>-->
-<!--        <el-form-item :label-width="formLabelWidth">-->
-<!--          <el-button @click="addDialogImgVisible = false">取消</el-button>-->
-<!--          <el-button @click="updateImg()" type="primary">确认</el-button>-->
-<!--        </el-form-item>-->
-<!--      </el-form>-->
-<!--    </el-dialog>-->
-
-<!--    <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">-->
-<!--      <h3 align="center">修改密码</h3>-->
-<!--      <el-form-item label="旧密码" prop="oldpassword">-->
-<!--        <el-input type="password" v-model="ruleForm.oldpass" autocomplete="off"></el-input>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="新密码" prop="password">-->
-<!--        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="确认密码" prop="checkPass">-->
-<!--        <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item>-->
-<!--        <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>-->
-<!--        <el-button @click="resetForm('ruleForm')">重置</el-button>-->
-<!--      </el-form-item>-->
-<!--    </el-form>-->
   </div>
 </template>
 

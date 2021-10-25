@@ -4,7 +4,7 @@
     <el-timeline :reverse=reverse>
       <el-timeline-item :timestamp=dData.dtime placement="top" v-for="(dData, index) in dynamicData" :key="index">
         <el-card>
-          <h4>更新 {{ dData.tid }} 打卡</h4>
+          <h4>更新 {{ dData.tname }} 打卡</h4>
           <!--          <p>did: {{dData.did}}</p>-->
           <p>{{dData.username}} 提交于 {{ dData.dtime }}</p>
           <img :src="dData.dimg" v-if="dData.dimg == ''? '':dData.dimg" style="width: 300px; height: 300px"/>

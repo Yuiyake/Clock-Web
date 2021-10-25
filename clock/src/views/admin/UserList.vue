@@ -15,16 +15,32 @@
         <el-table-column label="id" prop="id"  width="100"></el-table-column>
         <el-table-column label="用户名" prop="username"></el-table-column>
         <el-table-column label="学号" prop="account"></el-table-column>
-        <el-table-column label="权限" prop="role"></el-table-column>
-        <el-table-column label="性别" prop="sex" width="100"></el-table-column>
+        <el-table-column label="权限" prop="role">
+          <template slot-scope="scope">
+            <span v-if="scope.row.role == 0">管理员</span>
+            <span v-if="scope.row.role == 1">用户</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="性别" prop="sex" width="110">
+          <template slot-scope="scope">
+            <span v-if="scope.row.sex == 0">男</span>
+            <span v-if="scope.row.sex == 1">女</span>
+            <span v-if="scope.row.sex == 2">保密</span>
+          </template>
+        </el-table-column>
 <!--        <el-table-column label="密码" prop="password"></el-table-column>-->
 <!--        <el-table-column label="专业" prop="major"></el-table-column>-->
-        <el-table-column label="小组" prop="groupId" width="100"></el-table-column>
+<!--        <el-table-column label="小组id" prop="groupId" width="100"></el-table-column>-->
 <!--        <el-table-column label="出生年月" prop="birthday"></el-table-column>-->
 <!--        <el-table-column label="联系方式" prop="phone"></el-table-column>-->
 <!--        <el-table-column label="家庭住址" prop="address"></el-table-column>-->
         <el-table-column label="创建时间" prop="createtime"></el-table-column>
-        <el-table-column label="状态" prop="state" width="100"></el-table-column>
+        <el-table-column label="状态" prop="state" width="100">
+          <template slot-scope="scope">
+            <span v-if="scope.row.state == 0">正常</span>
+            <span v-if="scope.row.state == 1">封禁中</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
 <!--            <el-button @click="delData(scope.row.id)" type="danger" size="small">禁用</el-button>-->

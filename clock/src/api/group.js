@@ -63,6 +63,16 @@ export  function changeGnum(gid) {
     })
 }
 
+export  function delGroup(gid) {
+    return service({
+        method: 'delete',
+        url: '/group/delGroup',
+        params: {
+            gid: gid
+        }
+    })
+}
+
 export function userQuitGroup(uid, gid){
     return service({
         method: 'delete',
@@ -76,7 +86,7 @@ export function userQuitGroup(uid, gid){
 
 export function userDeleteGnum(gid){
     return service({
-        method: 'post',
+        method: 'delete',
         url: '/group/userDeleteGnum',
         params: {
             gid: gid,

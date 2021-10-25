@@ -49,36 +49,6 @@ const AdminRouter = {
             name: 'adminInfo',
             component: () => import('../../views/admin/adminInfo')
         },
-        // {
-        //     path: '/majorList',
-        //     name: 'majorList',
-        //     component: () => import('../../pages/admin/MajorList'),
-        // },
-        // {
-        //     path: '/classList',
-        //     name: 'classList',
-        //     component: () => import('../../pages/admin/ClassesList'),
-        // },
-        // {
-        //     path: '/courseList',
-        //     name: 'courseList',
-        //     component: () => import('../../pages/admin/CourseList'),
-        // },
-        // {
-        //     path: '/coursePlanList',
-        //     name: 'coursePlanList',
-        //     component: () => import('../../pages/admin/CoursePlanList'),
-        // },
-        // {
-        //     path: '/scoreList',
-        //     name: 'scoreList',
-        //     component: () => import('../../pages/admin/ScoreList'),
-        // },
-        // {
-        //     path: '/adminInfo',
-        //     name: 'adminInfo',
-        //     component: () => import('../../pages/admin/MyInfo'),
-        // },
     ]
 }
 

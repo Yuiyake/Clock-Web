@@ -135,8 +135,6 @@ export default {
       addSonReply({
         rid:null,
         fromuid:this.admin.id,
-        // fromuname:'uio',
-        // touname:'sdszvc',
         ...this.sonForm
       }).then(res => {
         this.cancel();

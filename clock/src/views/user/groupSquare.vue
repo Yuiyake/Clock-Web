@@ -8,7 +8,6 @@
     </div>
     <!--    表格-->
     <h4>你好，{{admin.username}}, id: {{admin.id}}</h4>
-<!--    <span label="打卡率" >{{percentage}}</span>-->
     <div style="float:left;padding-top:20px;width:98%">
       <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="小组编号" prop="gid"></el-table-column>
@@ -20,6 +19,9 @@
             <span v-if="scope.row.clocktype == 3">早睡</span>
             <span v-if="scope.row.clocktype == 4">运动</span>
             <span v-if="scope.row.clocktype == 5">读书</span>
+            <span v-if="scope.row.clocktype == 6">禁x</span>
+            <span v-if="scope.row.clocktype == 7">练字</span>
+            <span v-if="scope.row.clocktype == 8">其他</span>
           </template>
         </el-table-column>
         <el-table-column label="成员数量" prop="gnum"></el-table-column>
@@ -47,23 +49,25 @@
     <div>
       <el-dialog title="小组信息" width="40%" :visible.sync="addDialogFormVisible">
         <el-form :model="addform" ref="addform" >
-<!--          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="colcktype">-->
-<!--            <el-select v-model="addform.colcktype" clearable placeholder="请选择">-->
-<!--              <el-option v-for="item in colcktype" :key="item.id" :label="item.name" :value="item.id"></el-option>-->
-<!--            </el-select>-->
+<!--          <el-form-item label="小组编号" :label-width="formLabelWidth" prop="gid">-->
+<!--            <el-input v-model="addform.gid" autocomplete="off"></el-input>-->
 <!--          </el-form-item>-->
-          <el-form-item label="小组编号" :label-width="formLabelWidth" prop="gid">
-            <el-input v-model="addform.gid" autocomplete="off"></el-input>
-          </el-form-item>
           <el-form-item label="小组名称" :label-width="formLabelWidth" prop="gname">
             <el-input v-model="addform.gname" autocomplete="off"></el-input>
           </el-form-item>
-          <el-form-item label="打卡类型" :label-width="formLabelWidth" prop="clocktype">
-            <el-input v-model="addform.clocktype" autocomplete="off"></el-input>
+          <el-form-item label="打卡类型" :label-width="formLabelWidth">
+<!--            <el-input v-model="addform.clocktype" autocomplete="off"></el-input>-->
+            <el-select v-model="addform.clocktype" placeholder="请选择打卡类型">
+              <el-option label="学习" value=1 ></el-option>
+              <el-option label="早起" value=2 ></el-option>
+              <el-option label="早睡" value=3 ></el-option>
+              <el-option label="运动" value=4 ></el-option>
+              <el-option label="读书" value=5 ></el-option>
+              <el-option label="禁x" value=6 ></el-option>
+              <el-option label="练字" value=7 ></el-option>
+              <el-option label="其它" value=8 ></el-option>
+            </el-select>
           </el-form-item>
-<!--          <el-form-item label="成员数量" :label-width="formLabelWidth" prop="gNum">-->
-<!--            <el-input v-model="addform.gnum" autocomplete="off"></el-input>-->
-<!--          </el-form-item>-->
           <el-form-item :label-width="formLabelWidth">
             <el-button @click="addDialogFormVisible = false">取消</el-button>
             <el-button @click="createNewGroup('addform')" type="primary">确认</el-button>
@@ -76,7 +80,7 @@
 
 <script>
 
-import {selectAllGroups, updateGroup, userJoinGroup, changeGnum, userAddGroup, selectMyGroups} from "@/api/group";
+import {selectAllGroups, userJoinGroup, changeGnum, userAddGroup, selectMyGroups} from "@/api/group";
 
 export default {
     name: "groupSquare",
@@ -85,11 +89,7 @@ export default {
         searchList: {
           gid: ''
         },
-        colcktype: [
-          {id: '1', name: '早起'},
-          {id: '2', name: '学习'},
-          {id: '3', name: '打游戏'}
-        ],
+        colcktype: [],
         searchParam: {
           pageSize:10,
           pageNum:1,
@@ -103,24 +103,11 @@ export default {
 
         addDialogFormVisible:false,
         formLabelWidth:'120px',
-        addform:{},
-        // addformrules: {
-        //   majorId: [
-        //     { required: true, message: '请选择专业', trigger: 'blur' },
-        //   ],
-        //   name: [
-        //     { required: true, message: '请输入班级名称', trigger: 'blur' },
-        //   ],
-        //   joinYear: [
-        //     { required: true, message: '请输入入学年份', trigger: 'blur' },
-        //   ],
-        //   studentNum: [
-        //     { required: true, message: '请输入学生数量', trigger: 'blur' },
-        //   ],
-        //   teacher: [
-        //     { required: true, message: '请输入辅导员', trigger: 'blur' },
-        //   ],
-        // },
+        addform:{
+          gid: 0,
+          gname:'',
+          clocktype:0
+        },
       }
     },
 
@@ -161,7 +148,6 @@ export default {
       },
       addToGroup(form) {
         this.addform = JSON.parse(JSON.stringify(form))
-        // console.log(this.addform)
         this.addDialogFormVisible = true
       },
 
@@ -170,26 +156,25 @@ export default {
           console.log(this.addform)
           if (valid) {
             userAddGroup(this.addform).then(res => {
-              let code = res.data.code
-              if(code == 200) {
+              if(res.data.code == 200) {
                 this.getAllList()
-                this.$message({ showClose: true, message: '成功!', type: 'success'});
+                this.$message({ showClose: true, message: '创建小组成功!', type: 'success'});
                 this.addDialogFormVisible = false
+                console.log(res.data)
+                let ggid = res.data.data
+                this.toUpdate(ggid)
               }else {
                 this.$message({ showClose: true, message: res.data.message, type: 'error'});
               }
             }).catch((err) => {
               console.log(err)
             })
-          } else {
-            console.log('error submit!!');
-            return false;
           }
         });
       },
 
       toUpdate(gid) {
-        console.log(this.admin.id)
+        // console.log(this.admin.id)
         selectMyGroups(this.admin.id).then(res => {
           if(res.data.code == 200) {
             console.log(res.data.data)
@@ -200,7 +185,6 @@ export default {
                 break;
               }
             }if(this.isrepect==0){
-                // console.log(1);
                 userJoinGroup(this.admin.id, gid).then(res => {
                   if (res.data.code == 200) {
                     this.getAllList();

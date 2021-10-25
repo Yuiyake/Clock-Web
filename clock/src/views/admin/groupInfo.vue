@@ -14,7 +14,8 @@
         <el-table-column label="成员数量" prop="gnum"></el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">
-            <el-button @click="toUpdate(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button @click="toUpdate(scope.row)" type="primary" size="small">编辑</el-button>
+            <el-button @click="toDel(scope.row.gid)" type="danger" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -63,7 +64,8 @@
 </template>
 
 <script>
-import {selectAllGroups, updateGroup, selectByGroupName} from "@/api/group";
+import {selectAllGroups, updateGroup, selectByGroupName, delGroup} from "@/api/group";
+import {deleteUser} from "@/api/user";
 
 export default {
   name: "groupInfo",
@@ -137,6 +139,29 @@ export default {
     toUpdate(form) {
       this.addform = JSON.parse(JSON.stringify(form))
       this.addDialogFormVisible = true
+    },
+    toDel(gid){
+      this.$confirm('确定要删除该小组吗?小组成员将被清空!', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delGroup (gid).then(res => {
+          if(res.data.code == 200) {
+            this.getAllList()
+            this.$message({ showClose: true, message: '删除成功!', type: 'success'});
+          }else {
+            this.$message({ showClose: true, message: '删除失败，请重试!', type: 'error'});
+          }
+        }).catch(() => {
+          console.log("===管理员删除异常===")
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
 
     getGroupByName() {

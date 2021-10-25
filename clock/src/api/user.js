@@ -62,7 +62,7 @@ export function selectForbidUser(data) {
 
 export function deleteUser(data) {
     return service({
-        method: 'get',
+        method: 'delete',
         url: '/user/deleteUser',
         params: {
             id: data

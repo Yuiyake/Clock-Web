@@ -12,7 +12,12 @@
         <el-table-column label="id" prop="id"></el-table-column>
         <el-table-column label="账号" prop="account"></el-table-column>
         <el-table-column label="用户名" prop="username"></el-table-column>
-        <el-table-column label="状态" prop="state"></el-table-column>
+        <el-table-column label="状态" prop="state">
+          <template slot-scope="scope">
+            <span v-if="scope.row.state == 0">正常</span>
+            <span v-if="scope.row.state == 1">封禁中</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button @click="recovery(scope.row.id)" size="small"  type="primary">恢复</el-button>
@@ -128,8 +133,7 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteUser (id).then(res => {
-          let code = res.data.code
-          if(code == 200) {
+          if(res.data.code == 200) {
             this.getAllList()
             this.$message({ showClose: true, message: '删除成功!', type: 'success'});
           }else {

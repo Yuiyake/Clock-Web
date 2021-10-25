@@ -19,7 +19,8 @@
       </tr>
       <tr>
         <td>头像</td>
-        <td>{{admin.uavg}}</td>
+<!--        <td>{{admin.uavg}}</td>-->
+        <td><img :src="admin.uavg" width="300px" height="300px"></td>
       </tr>
       <tr>
 <!--        <td></td>-->

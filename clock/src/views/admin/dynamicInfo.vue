@@ -35,13 +35,14 @@
               <el-form-item label="发布时间">
                 <span>{{ props.row.dtime }}</span>
               </el-form-item>
-              <el-form-item label="点赞数">
-                <span>{{ props.row.support }}</span>
-              </el-form-item>
+<!--              <el-form-item label="点赞数">-->
+<!--                <span>{{ props.row.support }}</span>-->
+<!--              </el-form-item>-->
               <el-form-item label="回复数">
                 <span>{{ props.row.dreplycount }}</span>
               </el-form-item>
               <el-form-item label="内容">
+                <img :src="props.row.dimg" v-if="props.row.dimg == ''? '':props.row.dimg" style="width: 300px; height: 300px" />
                 <span>{{ props.row.dconcern }}</span>
               </el-form-item>
             </el-form>
@@ -144,6 +145,9 @@ export default {
     },
 
     getDynamicByName() {
+      if (this.searchParam.username==null || this.searchParam.username == ''){
+        this.getDynamic()
+      }
       selectDynamicByName(this.searchParam.username).then(res => {
         console.log(this.searchParam)
         let code = res.data.code

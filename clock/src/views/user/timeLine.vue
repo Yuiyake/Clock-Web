@@ -4,7 +4,12 @@
     <el-timeline>
       <el-timeline-item :timestamp=dData.dtime placement="top" v-for="(dData, index) in dynamicData" :key="index">
         <el-card>
-          <h4>更新 {{ dData.tid }} 打卡</h4>
+          <h4>更新 {{ dData.tname }} 打卡</h4>
+<!--          <h4>更新-->
+<!--            <template slot-scope="scope">-->
+<!--              {{typeId[scope.row.tid]['label']}}-->
+<!--            </template>-->
+<!--            打卡</h4>-->
 <!--          <p>did: {{dData.did}}</p>-->
           <p>{{dData.username}} 提交于 {{ dData.dtime }}</p>
           <img :src="dData.dimg" v-if="dData.dimg == ''? '':dData.dimg" style="width: 300px; height: 300px"/>
@@ -62,7 +67,33 @@ export default {
         // 这里的1只是给一个值让他可以get到，不然会报错，至于这个did真正的值，会在isShow()方法的时候被修改。
         did:1,
         rContents:''
-      }
+      },
+      typeId:[
+        {
+          value:1,
+          label: "早起"
+        },
+        {
+          value:2,
+          label: "学习"
+        },
+        {
+          value:3,
+          label: "早睡"
+        },
+        {
+          value:4,
+          label: "运动"
+        },
+        {
+          value:5,
+          label: "读书"
+        },
+        {
+          value:7,
+          label: "禁x"
+        },
+      ],
 
     }
   },
@@ -146,6 +177,8 @@ export default {
     commitComment(did){
     //  父评论
       let replyFid = this.admin.id
+      let Fdid = this.fatherForm.did
+      console.log("fid:"+Fdid)
       console.log(this.dynamicData.did)
       addRootReply({
         rid:null,
@@ -158,7 +191,7 @@ export default {
         let code = res.data.code
         if (code == 200) {
           this.$message({ showClose: true, message: '发布成功！', type: 'success'});
-          this.selectUserReply(this.fatherForm.did)
+          // this.selectUserReply(Fdid)
           // this.commentData = res.data.data.data
           // console.log(this.commentData)
         }

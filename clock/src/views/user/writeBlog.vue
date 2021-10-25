@@ -8,6 +8,9 @@
           <el-option label="早睡" value=3 ></el-option>
           <el-option label="运动" value=4 ></el-option>
           <el-option label="读书" value=5 ></el-option>
+          <el-option label="禁x" value=6 ></el-option>
+          <el-option label="练字" value=7 ></el-option>
+          <el-option label="其它" value=8 ></el-option>
         </el-select>
       </el-form-item>
 
@@ -79,11 +82,10 @@ export default {
     submitInfo(){
       this.dynamicInfo.uid = this.admin.id
       this.dynamicInfo.tid = parseInt(this.dynamicInfo.tid)
-      console.log(typeof (this.dynamicInfo.tid))
-      console.log(this.dynamicInfo)
+      // console.log(typeof (this.dynamicInfo.tid))
+      // console.log(this.dynamicInfo)
       addUserDynamic(this.dynamicInfo).then(res => {
-        let code = res.data.code
-        if (code == 200) {
+        if (res.data.code == 200) {
           this.$message({ showClose: true, message: '成功!', type: 'success'});
         }else {
           this.$message({ showClose: true, message: res.data.message, type: 'error'});

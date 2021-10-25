@@ -65,12 +65,6 @@ export default {
         } else {
           return false;
         }
-        // if (valid) {
-        //   userLogin(this.searchData).then(function (res){
-        //     this.$message({message:'success!'});
-        //     this.$router.push({path:'/adminMain'})
-        //   })
-        // }
       });
       // this.$router.push({path:`/adminMain`})
     }
