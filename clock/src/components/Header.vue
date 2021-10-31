@@ -34,19 +34,6 @@ export default {
           console.log(this.admin)
           console.log(this.admin.uavg)
         },
-        // getUser() {
-        //   selectUserById(this.admin.id).then(res => {
-        //     let code = res.data.code
-        //     if(code == 200) {
-        //       console.log(this.admin.uavg)
-        //       console.log("初始化成功")
-        //     }else {
-        //       this.$message({ showClose: true, message: res.data.message, type: 'error'});
-        //     }
-        //   }).catch((err) => {
-        //     console.log(err)
-        //   })
-        // },
     },
 }
 </script>

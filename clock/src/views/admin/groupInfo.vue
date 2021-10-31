@@ -10,7 +10,18 @@
       <el-table stripe :data="tableData" style="width: 100%" :cell-style="{ textAlign: 'center' }" :header-cell-style="{textAlign: 'center'}">
         <el-table-column label="小组编号" prop="gid"></el-table-column>
         <el-table-column label="小组名称" prop="gname"></el-table-column>
-        <el-table-column label="打卡类型" prop="clocktype"></el-table-column>
+        <el-table-column label="打卡类型" prop="clocktype">
+          <template slot-scope="scope">
+            <span v-if="scope.row.clocktype == 1">早起</span>
+            <span v-if="scope.row.clocktype == 2">学习</span>
+            <span v-if="scope.row.clocktype == 3">早睡</span>
+            <span v-if="scope.row.clocktype == 4">运动</span>
+            <span v-if="scope.row.clocktype == 5">读书</span>
+            <span v-if="scope.row.clocktype == 6">禁x</span>
+            <span v-if="scope.row.clocktype == 7">练字</span>
+            <span v-if="scope.row.clocktype == 8">其他</span>
+          </template>
+        </el-table-column>
         <el-table-column label="成员数量" prop="gnum"></el-table-column>
         <el-table-column fixed="right" label="操作" >
           <template slot-scope="scope">

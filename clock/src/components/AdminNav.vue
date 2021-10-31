@@ -46,27 +46,6 @@
         <i class="el-icon-tickets"></i>
         <span slot="title">个人资料</span>
       </el-menu-item>
-<!--      <el-menu-item index="/majorList">-->
-<!--        <i class="el-icon-tickets"></i>-->
-<!--        <span slot="title">分类（专业）管理</span>-->
-<!--      </el-menu-item>-->
-<!--      <el-menu-item index="/classList">-->
-<!--        <i class="el-icon-film"></i>-->
-<!--        <span slot="title">小组（班级）管理</span>-->
-<!--      </el-menu-item>-->
-<!--      <el-submenu index="2">-->
-<!--        <template slot="title"><i class="el-icon-s-platform"></i>课程管理</template>-->
-<!--        <el-menu-item index="/courseList"><i class="el-icon-s-platform"></i>课程管理</el-menu-item>-->
-<!--        <el-menu-item index="/coursePlanList"><i class="el-icon-s-order"></i>课程表管理</el-menu-item>-->
-<!--      </el-submenu>-->
-<!--      <el-menu-item index="/scoreList">-->
-<!--        <i class="el-icon-price-tag"></i>-->
-<!--        <span slot="title">成绩（打卡）管理</span>-->
-<!--      </el-menu-item>-->
-<!--      <el-menu-item index="/adminInfo">-->
-<!--        <i class="el-icon-s-custom"></i>-->
-<!--        <span slot="title">个人信息</span>-->
-<!--      </el-menu-item>-->
     </el-menu>
   </div>
 </template>

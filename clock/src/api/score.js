@@ -17,3 +17,13 @@ export function selectUserScore(uid) {
         }
     })
 }
+
+export function userDaka(uid) {
+    return service({
+        method: 'post',
+        url: '/score/userDaka',
+        params: {
+            uid: uid
+        }
+    })
+}

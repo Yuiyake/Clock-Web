@@ -5,16 +5,9 @@
       <el-timeline-item :timestamp=dData.dtime placement="top" v-for="(dData, index) in dynamicData" :key="index">
         <el-card>
           <h4>更新 {{ dData.tname }} 打卡</h4>
-<!--          <h4>更新-->
-<!--            <template slot-scope="scope">-->
-<!--              {{typeId[scope.row.tid]['label']}}-->
-<!--            </template>-->
-<!--            打卡</h4>-->
-<!--          <p>did: {{dData.did}}</p>-->
           <p>{{dData.username}} 提交于 {{ dData.dtime }}</p>
           <img :src="dData.dimg" v-if="dData.dimg == ''? '':dData.dimg" style="width: 300px; height: 300px"/>
           <p>{{dData.dconcern}}</p>
-<!--          <el-button type="text" @click="getRowDynamic">查看详情</el-button>-->
           <el-button v-if="!dData.showFlag" type="text" @click="isShow(dData,index)">查看</el-button>
           <template v-else>
             <el-button type="text" @click="showReply(dData)">回复</el-button>
@@ -110,16 +103,13 @@ export default {
   methods: {
     getDynamic() {
       this.dynamicData.uid = this.admin.id
-      // console.log(this.dynamicData.uid)
       selectThisDynamic(this.dynamicData.uid).then(res => {
         let code = res.data.code
-        // console.log(res.data.data)
         if (code == 200) {
           this.dynamicData = res.data.data.map(item=>{
             item.showFlag = false;
             return item;
           })
-          // console.log(this.dynamicData)
           for (let i = 0; i < this.dynamicData.length; i++) {
             this.didList.push(this.dynamicData[i].did)
           }
@@ -167,6 +157,7 @@ export default {
             // console.log(res)
             // this.commentData.push(res.data.data.data)
             console.log(this.commentData)
+            this.replyVisible = false
             // console.log(res.data.data)
             // console.log(this.commentData[0].replyVOS)
             // console.log(this.commentData[0].did)

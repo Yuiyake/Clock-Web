@@ -84,20 +84,21 @@ export default {
     },
     // 获取id查询信息
     getFUserById(){
-      if (this.searchParam.id===null){
+      if (this.searchParam.id===null || this.searchParam.id === ''){
         this.getAllList()
+      } else {
+        selectFUser (this.searchParam).then(res => {
+          let code = res.data.code
+          if(code == 200) {
+            this.tableData = res.data.data.list
+            this.total = res.data.data.total
+          }else {
+            this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
       }
-      selectFUser (this.searchParam).then(res => {
-        let code = res.data.code
-        if(code == 200) {
-          this.tableData = res.data.data.list
-          this.total = res.data.data.total
-        }else {
-          this.$message({ showClose: true, message: '查询失败，请重试!', type: 'error'});
-        }
-      }).catch((err) => {
-        console.log(err)
-      })
     },
     // 用户复原
     recovery(id) {

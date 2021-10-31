@@ -18,8 +18,6 @@
         <el-upload
             class="upload-demo"
             action="http://localhost:1013/user/imgStr"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
             :file-list="fileList"
             :on-success="handleAvatarSuccess"
             list-type="picture">
@@ -47,6 +45,7 @@
 <script>
 import {addUserDynamic} from "@/api/dynamic"
 import {changeIsClock} from "@/api/user"
+import {userDaka} from "@/api/score";
 import dynamicInfo from "@/views/admin/dynamicInfo";
 export default {
   name: "writeBlog",
@@ -94,6 +93,7 @@ export default {
         console.log(err)
       })
       changeIsClock(this.admin.id).then(res => {
+        console.log(this.admin.id)
         let code = res.data.code
         if (code == 200) {
           console.log("更新今日打卡状态成功")
@@ -103,22 +103,12 @@ export default {
       }).catch((err) => {
         console.log(err)
       })
+      userDaka(this.admin.id).then(res=>{
+        if(res.data.code==200){
+          console.log("succeed!")
+        }
+      })
     },
-
-    // 获取当前时间
-    // getCurrentTime() {
-    //   //获取当前时间并打印
-    //   var _this = this;
-    //   let yy = new Date().getFullYear();
-    //   let mm = new Date().getMonth()+1;
-    //   let dd = new Date().getDate();
-    //   let hh = new Date().getHours();
-    //   let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
-    //   let ss = new Date().getSeconds()<10 ? '0'+new Date().getSeconds() : new Date().getSeconds();
-    //   _this.gettime = yy+'/'+mm+'/'+dd+' '+hh+':'+mf+':'+ss;
-    //   this.dynamicInfo.dtime = _this.gettime
-    //   console.log(this.dynamicInfo.dtime)
-    // },
 
     // 获取信息
     getUserInfo() {
@@ -126,17 +116,11 @@ export default {
       console.log(this.admin.id)
     },
 
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       console.log(this.imageUrl)
-      console.log(res)
-      console.log(file)
+      // console.log(res)
+      // console.log(file)
       this.dynamicInfo.dimg = res
       // console.log(res)
       // console.log("图片上传里："+this.dynamicInfo.dimg)

@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+<!--     父评论-->
     <div class="comment" v-for="(item, i) in comments" :key="i">
       <div class="info">
         <img class="avatar" :src="item.uavg" width="36" height="36"/>
@@ -25,9 +26,7 @@
       <div class="reply">
         <div class="item" v-for="(replyVOS, j) in item.replyVOS" :key="j">
           <div class="reply-content">
-<!--            <span class="from-name">{{replyVOS.fromuid}}</span><span>: </span>-->
             <span class="from-name">{{replyVOS.fromuname}}</span><span>: </span>
-<!--            <span class="to-name">@{{replyVOS.touid}}</span>-->
             <span class="to-name">@{{replyVOS.touname}}</span>
             <span>{{replyVOS.rContents}}</span>
           </div>

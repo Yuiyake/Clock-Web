@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {selectAllScore, selectUserScore} from "@/api/score"
+import {selectAllScore, selectUserScore, userDaka} from "@/api/score"
 export default {
   name: "myScore",
   data() {

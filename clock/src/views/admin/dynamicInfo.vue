@@ -86,7 +86,7 @@
           <el-table-column prop="uid" label="用户"></el-table-column>
           <el-table-column prop="dtime" label="发布时间"></el-table-column>
 <!--          <el-table-column prop="support" label="点赞数"></el-table-column>-->
-          <el-table-column prop="dreplycount" label="回复数"></el-table-column>
+<!--          <el-table-column prop="dreplycount" label="回复数"></el-table-column>-->
           <el-table-column prop="dconcern" label="内容"></el-table-column>
         </el-table>
       </el-dialog>
